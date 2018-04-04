@@ -16,6 +16,8 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
 
     public static final String LABEL_KEY = "LABELKEY" ;
 
+    private int x;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
