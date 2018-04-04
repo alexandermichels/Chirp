@@ -41,6 +41,23 @@
             tools:layout_editor_absoluteY="26dp" />
 
         <TextView
+            android:id="@+id/handleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter a Handle: "
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="86dp" />
+
+        <EditText
+            android:id="@+id/userHandle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="273dp" />
+
+        <TextView
             android:id="@+id/passwordText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,22 +91,7 @@
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="104dp" />
 
-        <TextView
-            android:id="@+id/handleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enter a Handle: "
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="86dp" />
 
-        <EditText
-            android:id="@+id/userHandle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="273dp" />
 
         <Button
             android:id="@+id/RegisterButton"
