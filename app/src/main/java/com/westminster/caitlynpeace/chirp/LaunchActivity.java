@@ -3,8 +3,13 @@ package com.westminster.caitlynpeace.chirp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+
+import java.io.File;
+import java.io.IOException;
 
 public class LaunchActivity extends AppCompatActivity {
 
@@ -13,6 +18,14 @@ public class LaunchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
 
+        // Get user's email
+        EditText ue = (EditText) findViewById(R.id.UserEmail);
+        Editable userEmail = ue.getText();
+
+        //Get user's password
+        EditText up = (EditText) findViewById(R.id.UserPassword);
+        Editable userPassword = up.getText();
+        
         Button l = findViewById(R.id.LoginButton);
         l.setOnClickListener(new View.OnClickListener(){
             @Override
