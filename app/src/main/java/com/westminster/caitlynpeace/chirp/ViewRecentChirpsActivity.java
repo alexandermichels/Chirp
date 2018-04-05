@@ -3,6 +3,8 @@ package com.westminster.caitlynpeace.chirp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,6 +21,9 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
     public static final String USER_PASSWORD = "USER_PASSWORD";
 
     //just a change of scope local variables->instance variables
+    private RecyclerView timeline;
+    private LinearLayoutManager timelineManager;
+    private
     private Button logoutButton;
     private Button editWatchingButton;
 
@@ -29,6 +34,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewrecentchirps);
 
+        timeline = findViewById(R.id.timeline_recyclerview);
 
 
         logoutButton = findViewById(R.id.logout);
