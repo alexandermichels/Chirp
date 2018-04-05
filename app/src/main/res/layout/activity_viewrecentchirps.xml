@@ -1,52 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/timeline_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight=".8"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="541dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="113dp"
-        tools:layout_editor_absoluteY="5dp">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:layout_weight=".2" >
 
+            <Button
+                android:id="@+id/edit_watch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight=".5"
+                android:text="Watching" />
 
-        <TextView
-            android:id="@+id/recentChirps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="Recent Chirps"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="1dp" />
-
-        <ListView
-            android:layout_width="368dp"
-            android:layout_height="375dp"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="95dp" />
-
-        <Button
-            android:id="@+id/edit_watch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="View the Users You're Watching"
-            tools:layout_editor_absoluteX="152dp"
-            tools:layout_editor_absoluteY="1dp" />
-
-        <Button
-            android:id="@+id/logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logout"
-            android:layout_gravity="center"
-            tools:layout_editor_absoluteX="148dp"
-            tools:layout_editor_absoluteY="446dp" />
-
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight=".5"
+                android:text="Logout" />
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
