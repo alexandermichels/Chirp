@@ -15,6 +15,12 @@ import android.widget.Toast;
 public class ViewRecentChirpsActivity extends AppCompatActivity {
 
     public static final String LABEL_KEY = "LABELKEY" ;
+    public static final String USER_EMAIL = "USER_EMAIL";
+    public static final String USER_PASSWORD = "USER_PASSWORD";
+
+    //just a change of scope local variables->instance variables
+    private Button logoutButton;
+    private Button editWatchingButton;
 
     private int x;
 
@@ -25,8 +31,8 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
 
 
 
-        Button l = findViewById(R.id.logout);
-        l.setOnClickListener(new View.OnClickListener() {
+        logoutButton = findViewById(R.id.logout);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent l = new Intent(ViewRecentChirpsActivity.this, LaunchActivity.class);
@@ -37,8 +43,8 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
         });
 
 
-        Button w = findViewById(R.id.edit_watch);
-        w.setOnClickListener(new View.OnClickListener() {
+        editWatchingButton = findViewById(R.id.edit_watch);
+        editWatchingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent e = new Intent(ViewRecentChirpsActivity.this, AddRemoveWatchListActivity.class);
