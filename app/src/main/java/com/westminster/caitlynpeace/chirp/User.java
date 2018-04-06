@@ -6,7 +6,6 @@ public class User
 {
 	
 	private String email;
-	private String fullName;
 	private ArrayList<String> following;
 	
 	// Gson wants a default constructor
@@ -17,12 +16,6 @@ public class User
 	
 	public User(String email, String fullName) {
 		this.email = email;
-		this.fullName = fullName;
-	}
-	
-	@Override
-	public String toString() {
-		return email+" "+fullName;
 	}
 
 	public String getEmail() {
@@ -31,14 +24,6 @@ public class User
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getFullName() {
-		return fullName;
-	}
-
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
 	}
 
 	public ArrayList<String> getFollowing() {
