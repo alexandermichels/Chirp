@@ -17,10 +17,6 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-/**
- * Created by caitlynpeace on 3/23/18.
- */
-
 public class ViewRecentChirpsActivity extends AppCompatActivity {
 
     public static final String LABEL_KEY = "LABELKEY" ;
