@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,16 @@ import java.io.File;
 public class RegisterActivity extends AppCompatActivity
 {
     public static final String LABEL_KEY = "LABELKEY" ;
+    public EditText inputEmail;
+    public EditText inputHandle;
+    public EditText inputPass;
+    public EditText confirmPass;
+    public Button registerButton;
+
+    private String userEmail;
+    private String userHandle;
+    private String userPassword;
+    private String userConfirmPass;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -31,40 +42,124 @@ public class RegisterActivity extends AppCompatActivity
         tv.setText(label);
 
         // Get newly registered user's email
-        EditText inputEmail = (EditText) findViewById(R.id.userEmail);
-        Editable userEmail = inputEmail.getText();
+        inputEmail = (EditText) findViewById(R.id.userEmail);
+        inputEmail.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable)
+            {
+                userEmail = editable.toString();
+            }
+        });
 
         //Get newly registered user's handle
-        EditText inputHandle = (EditText) findViewById(R.id.userHandle);
-        Editable userHandle = inputEmail.getText();
+        inputHandle = (EditText) findViewById(R.id.userHandle);
+        inputHandle.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable)
+            {
+                userHandle = editable.toString();
+            }
+        });
 
         // Get newly registered users' password
-        EditText inputPass = (EditText) findViewById(R.id.userPassword);
-        Editable userPassword = inputPass.getText();
+        inputPass = (EditText) findViewById(R.id.userPassword);
+        inputPass.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable)
+            {
+                userPassword = editable.toString();
+            }
+        });
 
         //Get confirmed password & check if it is identical
-        EditText confirmPass = (EditText) findViewById(R.id.confirmUserPassword);
-        Editable confPass = inputPass.getText();
+        confirmPass = (EditText) findViewById(R.id.confirmUserPassword);
+        confirmPass.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
 
-        if(!inputPass.equals(confirmPass))
-        {
-            Toast.makeText(RegisterActivity.this,
-                    "Passwords do NOT match!", Toast.LENGTH_LONG).show();
-        }
-        else if(inputPass.equals(confirmPass))
-        {
-            Button reg = findViewById(R.id.RegisterButton);
-            reg.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view)
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable)
+            {
+                userConfirmPass = editable.toString();
+            }
+        });
+
+        registerButton = findViewById(R.id.RegisterButton);
+        registerButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view)
+            {
+                if (userConfirmPass.equals(userPassword) && userEmail != null && userHandle != null)
                 {
                     Intent r = new Intent(RegisterActivity.this, ViewRecentChirpsActivity.class);
-                    r.putExtra(RegisterActivity.LABEL_KEY,"View Recent Chirps");
+                    r.putExtra(RegisterActivity.LABEL_KEY, "View Recent Chirps");
                     startActivity(r);
                 }
-            });
-        }
+                else if (userConfirmPass.equals(userPassword))
+                {
+                    Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+                }
+                else if (userEmail != null)
+                {
+                    Toast.makeText(getApplicationContext(), "Please enter an email", Toast.LENGTH_SHORT).show();
+                }
+                else if (userHandle != null)
+                {
+                    Toast.makeText(getApplicationContext(), "Please enter a handle", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
-        
+
+
     }
 }
