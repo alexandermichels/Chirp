@@ -19,11 +19,11 @@ import java.io.File;
 public class RegisterActivity extends AppCompatActivity
 {
     public static final String LABEL_KEY = "LABELKEY" ;
-    public EditText inputEmail;
-    public EditText inputHandle;
-    public EditText inputPass;
-    public EditText confirmPass;
-    public Button registerButton;
+    private EditText inputEmail;
+    private EditText inputHandle;
+    private EditText inputPass;
+    private EditText confirmPass;
+    private Button registerButton;
 
     private String userEmail;
     private String userHandle;

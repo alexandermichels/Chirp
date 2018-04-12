@@ -31,6 +31,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
     private LinearLayoutManager timelineManager;
     private Button logoutButton;
     private Button editWatchingButton;
+    private Button createChirpButton;
 
 
     private int x;
@@ -66,6 +67,16 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
             }
         });
 
+        createChirpButton = findViewById(R.id.create_chirp);
+        createChirpButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent i = new Intent(ViewRecentChirpsActivity.this, CreateChirpActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     public static ArrayList<Chirp> getChirps()

@@ -8,9 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-/**
- * Created by caitlynpeace on 4/3/18.
- */
 
 public class AddRemoveWatchListActivity extends AppCompatActivity
 {
