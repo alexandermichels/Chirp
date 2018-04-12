@@ -28,7 +28,7 @@ public class WatchListActivity extends AppCompatActivity {
         l.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent l = new Intent(WatchListActivity.this, LaunchActivity.class);
+                Intent l = new Intent(WatchListActivity.this, LoginActivity.class);
                 startActivity(l);
                 Toast.makeText(WatchListActivity.this,
                         "Logged Out!", Toast.LENGTH_LONG).show();

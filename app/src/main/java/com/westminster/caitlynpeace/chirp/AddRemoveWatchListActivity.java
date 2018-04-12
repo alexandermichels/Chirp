@@ -43,7 +43,7 @@ public class AddRemoveWatchListActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Intent l = new Intent(AddRemoveWatchListActivity.this, LaunchActivity.class);
+                Intent l = new Intent(AddRemoveWatchListActivity.this, LoginActivity.class);
                 startActivity(l);
                 Toast.makeText(AddRemoveWatchListActivity.this,
                         "Logged Out!", Toast.LENGTH_LONG).show();

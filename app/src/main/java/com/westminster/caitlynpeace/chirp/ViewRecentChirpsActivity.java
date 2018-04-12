@@ -9,11 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -50,7 +47,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent l = new Intent(ViewRecentChirpsActivity.this, LaunchActivity.class);
+                Intent l = new Intent(ViewRecentChirpsActivity.this, LoginActivity.class);
                 startActivity(l);
                 Toast.makeText(ViewRecentChirpsActivity.this,
                         "Logged Out!", Toast.LENGTH_LONG).show();

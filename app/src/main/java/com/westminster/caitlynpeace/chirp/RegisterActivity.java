@@ -138,28 +138,66 @@ public class RegisterActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                if (userConfirmPass.equals(userPassword) && userEmail != null && userHandle != null)
+                if (isValidUser())
                 {
                     Intent r = new Intent(RegisterActivity.this, ViewRecentChirpsActivity.class);
                     r.putExtra(RegisterActivity.LABEL_KEY, "View Recent Chirps");
                     startActivity(r);
                 }
-                else if (userConfirmPass.equals(userPassword))
-                {
-                    Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
-                }
-                else if (userEmail != null)
-                {
-                    Toast.makeText(getApplicationContext(), "Please enter an email", Toast.LENGTH_SHORT).show();
-                }
-                else if (userHandle != null)
-                {
-                    Toast.makeText(getApplicationContext(), "Please enter a handle", Toast.LENGTH_SHORT).show();
-                }
             }
         });
 
+    }
 
+    public boolean isValidUser()
+    {
+        if (userEmail == null)
+        {
+            Toast.makeText(RegisterActivity.this, "Please enter a password", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (userHandle == null)
+        {
+            Toast.makeText(RegisterActivity.this, "Please enter a handle", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (userPassword == null)
+        {
+            Toast.makeText(RegisterActivity.this, "Please enter a password", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (userConfirmPass == null)
+        {
+            Toast.makeText(RegisterActivity.this, "Please enter a confirm password", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (userHandle.length() > 12)
+        {
+            Toast.makeText(RegisterActivity.this, "Your handle can be at most 12 characters", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (userPassword.length() > 24)
+        {
+            Toast.makeText(RegisterActivity.this, "Your password can be at most 24 characters", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (!userPassword.equals(userConfirmPass))
+        {
+            Toast.makeText(RegisterActivity.this, "Your passwords do not match", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else
+        {
+            for (char c : userHandle.toCharArray())
+            {
+                if (!Character.isLetterOrDigit(c))
+                {
+                    Toast.makeText(RegisterActivity.this, "Your handle must be alpha-numeric", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }
+        }
 
+        return true;
     }
 }

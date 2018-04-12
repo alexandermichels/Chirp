@@ -9,10 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.io.File;
-import java.io.IOException;
-
-public class LaunchActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     //we want to declare them here so they are fields/instance variables, different scope than a local variable
     private EditText emailEditText;
     private EditText passwordEditText;
@@ -24,7 +21,7 @@ public class LaunchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_launch);
+        setContentView(R.layout.activity_login);
 
         // Get user's email
         emailEditText = (EditText) findViewById(R.id.UserEmail);
@@ -79,7 +76,8 @@ public class LaunchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                Intent l = new Intent(LaunchActivity.this, ViewRecentChirpsActivity.class);
+                //try to log in
+                Intent l = new Intent(LoginActivity.this, ViewRecentChirpsActivity.class);
                 l.putExtra(ViewRecentChirpsActivity.LABEL_KEY,"View Recent Chirps");
                 l.putExtra(ViewRecentChirpsActivity.USER_EMAIL, userEmail);
                 l.putExtra(ViewRecentChirpsActivity.USER_PASSWORD, userPassword);
@@ -93,7 +91,7 @@ public class LaunchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                Intent r = new Intent(LaunchActivity.this, RegisterActivity.class);
+                Intent r = new Intent(LoginActivity.this, RegisterActivity.class);
                 r.putExtra(RegisterActivity.LABEL_KEY,"Let's Register for a Chirp Account!");
                 startActivity(r);
             }

@@ -6,7 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="top|center"
-    tools:context="com.westminster.caitlynpeace.chirp.LaunchActivity">
+    tools:context="com.westminster.caitlynpeace.chirp.LoginActivity">
 
     <LinearLayout
         android:layout_width="335dp"
