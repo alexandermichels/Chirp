@@ -2,7 +2,7 @@ package com.westminster.caitlynpeace.chirp;
 
 import java.util.Date;
 
-public class Chirp
+public class Chirp 
 {
 	private String creatorEmail;
 	private Date time;
@@ -25,8 +25,18 @@ public class Chirp
 		return time;
 	}
 	
+	public void setTime(long i)
+	{
+		this.time = new Date(i);
+	}
+	
 	public String getMessage()
 	{
 		return message;
+	}
+	
+	public String getID()
+	{
+		return (String)(this.getCreator()+this.getTime().getTime());
 	}
 }

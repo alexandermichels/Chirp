@@ -84,7 +84,7 @@ public class StringUtil
             throw new RuntimeException(e);
         }
     }
-    
+
 
     public static boolean verifyECDSASig(PublicKey publicKey, String data, byte [] signature)
     {
