@@ -51,4 +51,11 @@ public class LoginUITests
         onView(ViewMatchers.withId(R.id.LoginButton)).perform(ViewActions.click());
         onView(ViewMatchers.withId(R.id.timeline_recyclerview)).check(matches(isDisplayed()));
     }
+
+    @Test
+    public void registerButtonWorks()
+    {
+        onView(ViewMatchers.withId(R.id.LoginButton)).perform(ViewActions.click());
+        onView(ViewMatchers.withId(R.id.timeline_recyclerview)).check(matches(isDisplayed()));
+    }
 }

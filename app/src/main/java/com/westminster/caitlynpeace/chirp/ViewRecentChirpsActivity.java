@@ -25,10 +25,13 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
 
     //just a change of scope local variables->instance variables
     private RecyclerView timeline;
+    private ChirpAdapter chirpAdapter;
     private LinearLayoutManager timelineManager;
     private Button logoutButton;
     private Button editWatchingButton;
     private Button createChirpButton;
+
+    private static ArrayList<Chirp> chirps;
 
 
     private int x;
@@ -38,10 +41,12 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewrecentchirps);
 
+
+        getChirps();
         timeline = findViewById(R.id.timeline_recyclerview);
         timelineManager = new LinearLayoutManager(this);
         timeline.setLayoutManager(timelineManager);
-
+        updateUI();
 
         logoutButton = findViewById(R.id.logout);
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -76,10 +81,19 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
         });
     }
 
-    public static ArrayList<Chirp> getChirps()
+    public static void getChirps()
     {
         //figure this out.
-        return null;
+        ArrayList<Chirp> cs = new ArrayList<>();
+        for(int i = 0; i < 10; i++)
+        {
+            cs.add(new Chirp("test" + i + "@example.com", "Random words"));
+            cs.add(new Chirp("test" + i + "@example.com", "I really like &test" + ((i+4)%10) + ", they're a cool person"));
+            cs.add(new Chirp("test" + i + "@example.com", "&test" + ((i+7)%10) + " is an asshole"));
+            cs.add(new Chirp("test" + i + "@example.com", "Someone really boring: &test" + ((i+2)%10)));
+        }
+
+        chirps = cs;
     }
 
     public static class ChirpViewHolder extends RecyclerView.ViewHolder
@@ -87,6 +101,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
         private TextView creatorTextView;
         private TextView messageTextView;
         private int index;
+
         public ChirpViewHolder(LayoutInflater inflater, ViewGroup parent)
         {
             super(inflater.inflate(R.layout.chirp, parent, false));
@@ -97,8 +112,8 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
 
         public void bind(int index)
         {
-            Chirp c = getChirps().get(index);
-            creatorTextView.setText(c.getCreator());
+            Chirp c = chirps.get(index);
+            creatorTextView.setText("&" + c.getCreator());
             messageTextView.setText(c.getMessage());
             this.index = index;
         }
@@ -119,7 +134,20 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return getChirps().size();
+            return chirps.size();
+        }
+    }
+
+    private void updateUI()
+    {
+        if (chirpAdapter == null)
+        {
+            chirpAdapter = new ChirpAdapter();
+            timeline.setAdapter(chirpAdapter);
+        }
+        else
+        {
+            chirpAdapter.notifyDataSetChanged();
         }
     }
 }

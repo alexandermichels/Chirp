@@ -133,7 +133,7 @@ public class RegisterActivity extends AppCompatActivity
             }
         });
 
-        registerButton = findViewById(R.id.RegisterButton);
+        registerButton = findViewById(R.id.registerButton);
         registerButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view)
@@ -153,7 +153,7 @@ public class RegisterActivity extends AppCompatActivity
     {
         if (userEmail == null)
         {
-            Toast.makeText(RegisterActivity.this, "Please enter a password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RegisterActivity.this, "Please enter an email", Toast.LENGTH_SHORT).show();
             return false;
         }
         else if (userHandle == null)
