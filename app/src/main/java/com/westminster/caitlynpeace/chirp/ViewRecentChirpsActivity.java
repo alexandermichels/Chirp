@@ -16,22 +16,12 @@ import java.util.ArrayList;
 
 public class ViewRecentChirpsActivity extends AppCompatActivity {
 
-    public static final String USER_EMAIL = "USER_EMAIL";
-    public static final String USER_PASSWORD = "USER_PASSWORD";
-
-    private String userEmail;
-    private String userPassword;
-
-    //just a change of scope local variables->instance variables
     private RecyclerView timeline;
     private ChirpAdapter chirpAdapter;
     private LinearLayoutManager timelineManager;
     private Button logoutButton;
     private Button editWatchingButton;
     private Button createChirpButton;
-
-
-    private int x;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
