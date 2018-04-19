@@ -12,8 +12,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 public class ViewRecentChirpsActivity extends AppCompatActivity {
 
     private RecyclerView timeline;
@@ -51,7 +49,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
         editWatchingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent e = new Intent(ViewRecentChirpsActivity.this, AddRemoveWatchListActivity.class);
+                Intent e = new Intent(ViewRecentChirpsActivity.this, WatchListActivity.class);
                 startActivity(e);
             }
         });
