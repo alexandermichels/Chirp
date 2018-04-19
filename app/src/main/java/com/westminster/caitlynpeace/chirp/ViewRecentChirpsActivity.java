@@ -35,7 +35,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
         timeline.setLayoutManager(timelineManager);
         updateUI();
 
-        logoutButton = findViewById(R.id.logout);
+        logoutButton = findViewById(R.id.timeline_logout);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,7 +47,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
         });
 
 
-        editWatchingButton = findViewById(R.id.edit_watch);
+        editWatchingButton = findViewById(R.id.timeline_edit_watch);
         editWatchingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,7 +56,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
             }
         });
 
-        createChirpButton = findViewById(R.id.create_chirp);
+        createChirpButton = findViewById(R.id.timeline_create_chirp);
         createChirpButton.setOnClickListener(new View.OnClickListener()
         {
             @Override

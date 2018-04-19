@@ -24,7 +24,7 @@ public class CreateChirpActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_createchirp);
 
-        chirpMessage = findViewById(R.id.chirpMessage);
+        chirpMessage = findViewById(R.id.createChirp_chirpMessage);
         chirpMessage.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -46,7 +46,7 @@ public class CreateChirpActivity extends AppCompatActivity
             }
         });
 
-        addPhotoButton = findViewById(R.id.chirp_photo);
+        addPhotoButton = findViewById(R.id.createChirp_chirp_photo);
         addPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -55,7 +55,7 @@ public class CreateChirpActivity extends AppCompatActivity
             }
         });
 
-        chirpButton = findViewById(R.id.chirp_button);
+        chirpButton = findViewById(R.id.createChirp_chirp_button);
         chirpButton.setOnClickListener(new View.OnClickListener()
         {
             @Override

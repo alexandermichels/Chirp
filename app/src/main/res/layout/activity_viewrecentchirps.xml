@@ -22,7 +22,7 @@
         style="?android:attr/buttonBarButtonStyle" >
 
             <Button
-                android:id="@+id/edit_watch"
+                android:id="@+id/timeline_edit_watch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -30,7 +30,7 @@
                 android:text="@string/watching" />
 
             <Button
-                android:id="@+id/create_chirp"
+                android:id="@+id/timeline_create_chirp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -38,7 +38,7 @@
                 android:text="@string/create_chirp" />
 
             <Button
-                android:id="@+id/logout"
+                android:id="@+id/timeline_logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

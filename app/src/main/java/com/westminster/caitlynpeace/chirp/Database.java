@@ -44,6 +44,7 @@ public class Database
         {
             authenticated = false;
         }
+        users = new ArrayList<>();
         timeline = new ArrayList<>();
         following = new HashMap<>();
     }

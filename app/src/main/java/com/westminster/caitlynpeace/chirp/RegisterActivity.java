@@ -36,13 +36,8 @@ public class RegisterActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        Intent r = getIntent();
-        String label = (String) r.getSerializableExtra(LABEL_KEY);
-        TextView tv = findViewById(R.id.text);
-        tv.setText(label);
-
         // Get newly registered user's email
-        inputEmail = (EditText) findViewById(R.id.userEmail);
+        inputEmail = (EditText) findViewById(R.id.registerActivity_userEmail);
         inputEmail.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -65,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity
         });
 
         //Get newly registered user's handle
-        inputHandle = (EditText) findViewById(R.id.userHandle);
+        inputHandle = (EditText) findViewById(R.id.registerActivity_userHandle);
         inputHandle.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -88,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity
         });
 
         // Get newly registered users' password
-        inputPass = (EditText) findViewById(R.id.userPassword);
+        inputPass = (EditText) findViewById(R.id.registerActivity_userPassword);
         inputPass.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -111,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity
         });
 
         //Get confirmed password & check if it is identical
-        confirmPass = (EditText) findViewById(R.id.confirmUserPassword);
+        confirmPass = (EditText) findViewById(R.id.registerActivity_confirmUserPassword);
         confirmPass.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -133,7 +128,7 @@ public class RegisterActivity extends AppCompatActivity
             }
         });
 
-        registerButton = findViewById(R.id.registerButton);
+        registerButton = findViewById(R.id.registerActivity_registerButton);
         registerButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view)

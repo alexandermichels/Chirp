@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Get user's email
-        emailEditText = (EditText) findViewById(R.id.UserEmail);
+        emailEditText = (EditText) findViewById(R.id.loginActivity_UserEmail);
         //we need to use a TextWatcher to grab the string anytime they stop typing
         emailEditText.addTextChangedListener(new TextWatcher()
         {
@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         //Get user's password
-        passwordEditText = (EditText) findViewById(R.id.UserPassword);
+        passwordEditText = (EditText) findViewById(R.id.loginActivity_UserPassword);
         //Added Text change listener
         passwordEditText.addTextChangedListener(new TextWatcher()
         {
@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         
-        loginButton = findViewById(R.id.LoginButton);
+        loginButton = findViewById(R.id.loginActivity_LoginButton);
         loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view)
@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        registerButton = findViewById(R.id.RegisterButton);
+        registerButton = findViewById(R.id.loginActivity_RegisterButton);
         registerButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view)

@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <EditText
-        android:id="@+id/chirpMessage"
+        android:id="@+id/createChirp_chirpMessage"
         android:hint="What would you like to say?"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,14 +21,14 @@
         style="?android:attr/buttonBarButtonStyle">
 
         <Button
-            android:id="@+id/chirp_photo"
+            android:id="@+id/createChirp_chirp_photo"
             android:text="@string/add_photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight=".5" />
 
         <Button
-            android:id="@+id/chirp_button"
+            android:id="@+id/createChirp_chirp_button"
             android:text="@string/create_chirp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

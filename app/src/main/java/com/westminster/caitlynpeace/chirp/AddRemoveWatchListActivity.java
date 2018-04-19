@@ -29,7 +29,7 @@ public class AddRemoveWatchListActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addremovewatchlist);
 
-        userList = findViewById(R.id.timeline_recyclerview);
+        userList = findViewById(R.id.editwatchlist_recyclerview);
         userManager = new LinearLayoutManager(this);
         userList.setLayoutManager(userManager);
         updateUI();
@@ -54,7 +54,7 @@ public class AddRemoveWatchListActivity extends AppCompatActivity
             }
         });
 
-        logoutButton = findViewById(R.id.logout);
+        logoutButton = findViewById(R.id.editwatchlist_logout_button);
         logoutButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view)

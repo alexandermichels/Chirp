@@ -6,66 +6,59 @@
     android:orientation="vertical">
 
         <TextView
-            android:id="@id/text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Text" />
-
-
-        <TextView
-            android:id="@+id/emailText"
+            android:id="@+id/registerActivity_emailText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Enter your Email:" />
 
         <EditText
-            android:id="@+id/userEmail"
+            android:id="@+id/registerActivity_userEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textEmailAddress"/>
 
         <TextView
-            android:id="@+id/handleText"
+            android:id="@+id/registerActivity_handleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Enter a Handle: " />
 
         <EditText
-            android:id="@+id/userHandle"
+            android:id="@+id/registerActivity_userHandle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName" />
 
         <TextView
-            android:id="@+id/passwordText"
+            android:id="@+id/registerActivity_passwordText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Enter a Password: " />
 
         <EditText
-            android:id="@+id/userPassword"
+            android:id="@+id/registerActivity_userPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword" />
 
         <TextView
-            android:id="@+id/confirmPassword"
+            android:id="@+id/registerActivity_confirmPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Confirm your Password: " />
 
         <EditText
-            android:id="@+id/confirmUserPassword"
+            android:id="@+id/registerActivity_confirmUserPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword"/>
 
         <Button
-            android:id="@+id/registerButton"
+            android:id="@+id/registerActivity_registerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="REGISTER!" />

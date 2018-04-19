@@ -36,26 +36,25 @@ public class LoginUITests
     @Test
     public void userEmailTexBoxWorks()
     {
-        onView(ViewMatchers.withId(R.id.UserEmail)).perform(ViewActions.typeText("test@example.com")).check(matches(ViewMatchers.isDisplayed()));
+        onView(ViewMatchers.withId(R.id.loginActivity_UserEmail)).perform(ViewActions.typeText("test@example.com")).check(matches(ViewMatchers.isDisplayed()));
     }
 
     @Test
     public void userPasswordTexBoxWorks()
     {
-        onView(ViewMatchers.withId(R.id.UserPassword)).perform(ViewActions.typeText("password")).check(matches(ViewMatchers.isDisplayed()));
+        onView(ViewMatchers.withId(R.id.loginActivity_UserPassword)).perform(ViewActions.typeText("password")).check(matches(ViewMatchers.isDisplayed()));
     }
 
     @Test
     public void loginButtonWorks()
     {
-        onView(ViewMatchers.withId(R.id.LoginButton)).perform(ViewActions.click());
-        onView(ViewMatchers.withId(R.id.timeline_recyclerview)).check(matches(isDisplayed()));
+        onView(ViewMatchers.withId(R.id.loginActivity_LoginButton)).perform(ViewActions.click());
     }
 
     @Test
     public void registerButtonWorks()
     {
-        onView(ViewMatchers.withId(R.id.LoginButton)).perform(ViewActions.click());
-        onView(ViewMatchers.withId(R.id.timeline_recyclerview)).check(matches(isDisplayed()));
+        onView(ViewMatchers.withId(R.id.loginActivity_RegisterButton)).perform(ViewActions.click());
+        onView(ViewMatchers.withId(R.id.registerActivity_confirmPassword)).check(matches(isDisplayed()));
     }
 }

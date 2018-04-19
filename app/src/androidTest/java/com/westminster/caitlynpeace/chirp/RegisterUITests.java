@@ -37,24 +37,24 @@ public class RegisterUITests
     @Test
     public void userEmailTexBoxWorks()
     {
-        onView(ViewMatchers.withId(R.id.userEmail)).perform(ViewActions.typeText("test@example.com")).check(matches(isDisplayed()));
+        onView(ViewMatchers.withId(R.id.registerActivity_userEmail)).perform(ViewActions.typeText("test@example.com")).check(matches(isDisplayed()));
     }
 
     @Test
     public void userHandleTexBoxWorks()
     {
-        onView(ViewMatchers.withId(R.id.userHandle)).perform(ViewActions.typeText("test@example.com")).check(matches(isDisplayed()));
+        onView(ViewMatchers.withId(R.id.registerActivity_userHandle)).perform(ViewActions.typeText("test@example.com")).check(matches(isDisplayed()));
     }
 
     @Test
     public void userPasswordTexBoxWorks()
     {
-        onView(ViewMatchers.withId(R.id.userPassword)).perform(ViewActions.typeText("password")).check(matches(isDisplayed()));
+        onView(ViewMatchers.withId(R.id.registerActivity_userPassword)).perform(ViewActions.typeText("password")).check(matches(isDisplayed()));
     }
 
     @Test
     public void confirmUserPasswordTexBoxWorks()
     {
-        onView(ViewMatchers.withId(R.id.confirmUserPassword)).perform(ViewActions.typeText("test@example.com")).check(matches(isDisplayed()));
+        onView(ViewMatchers.withId(R.id.registerActivity_confirmUserPassword)).perform(ViewActions.typeText("test@example.com")).check(matches(isDisplayed()));
     }
 }

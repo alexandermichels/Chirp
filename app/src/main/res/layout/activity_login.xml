@@ -1,81 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="top|center"
-    tools:context="com.westminster.caitlynpeace.chirp.LoginActivity">
-
     <LinearLayout
-        android:layout_width="335dp"
-        android:layout_height="284dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/LoginText"
+            android:id="@+id/loginActivity_LoginText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login to Chirp"
-            tools:layout_editor_absoluteX="163dp"
-            tools:layout_editor_absoluteY="48dp" />
+            android:text="Login to Chirp"/>
 
         <TextView
-            android:id="@+id/emailText"
+            android:id="@+id/loginActivity_emailText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email:"
-            tools:layout_editor_absoluteX="163dp"
-            tools:layout_editor_absoluteY="48dp" />
+            android:text="Email:"/>
 
         <EditText
-            android:id="@+id/UserEmail"
+            android:id="@+id/loginActivity_UserEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textEmailAddress"
-            tools:layout_editor_absoluteX="85dp"
-            tools:layout_editor_absoluteY="99dp" />
+            android:inputType="textEmailAddress" />
 
         <TextView
-            android:id="@+id/passwordText"
+            android:id="@+id/loginActivity_passwordText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Password:"
-            tools:layout_editor_absoluteX="163dp"
-            tools:layout_editor_absoluteY="48dp" />
+            android:text="Password:" />
 
         <EditText
-            android:id="@+id/UserPassword"
+            android:id="@+id/loginActivity_UserPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPassword"
-            android:maxLength="25"
-            tools:layout_editor_absoluteX="84dp"
-            tools:layout_editor_absoluteY="178dp" />
+            android:inputType="textPassword"/>
 
         <Button
-            android:id="@+id/LoginButton"
+            android:id="@+id/loginActivity_LoginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login"
-            tools:layout_editor_absoluteX="64dp"
-            tools:layout_editor_absoluteY="144dp" />
+            android:text="Login"/>
 
         <Button
-            android:id="@+id/RegisterButton"
+            android:id="@+id/loginActivity_RegisterButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Register"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="190dp" />
+            android:text="Register"/>
 
     </LinearLayout>
-
-
-</android.support.constraint.ConstraintLayout>
