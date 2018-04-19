@@ -4,4 +4,5 @@
     <string name="watching">Watching</string>
     <string name="create_chirp">Create a Chirp</string>
     <string name="logout">Logout</string>
+    <string name="timeline">View Chirps</string>
 </resources>

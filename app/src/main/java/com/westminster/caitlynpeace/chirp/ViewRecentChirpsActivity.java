@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 public class ViewRecentChirpsActivity extends AppCompatActivity {
 
-    public static final String LABEL_KEY = "LABELKEY" ;
     public static final String USER_EMAIL = "USER_EMAIL";
     public static final String USER_PASSWORD = "USER_PASSWORD";
 
@@ -31,18 +30,16 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
     private Button editWatchingButton;
     private Button createChirpButton;
 
-    private static ArrayList<Chirp> chirps;
-
 
     private int x;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewrecentchirps);
 
-
-        getChirps();
+        ServerConnector.get().sendTimelineRequest(this);
         timeline = findViewById(R.id.timeline_recyclerview);
         timelineManager = new LinearLayoutManager(this);
         timeline.setLayoutManager(timelineManager);
@@ -52,10 +49,10 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Database.getDatabase().logout();
                 Intent l = new Intent(ViewRecentChirpsActivity.this, LoginActivity.class);
                 startActivity(l);
-                Toast.makeText(ViewRecentChirpsActivity.this,
-                        "Logged Out!", Toast.LENGTH_LONG).show();
+                Toast.makeText(ViewRecentChirpsActivity.this, "Logged Out!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -81,21 +78,6 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
         });
     }
 
-    public static void getChirps()
-    {
-        //figure this out.
-        ArrayList<Chirp> cs = new ArrayList<>();
-        for(int i = 0; i < 10; i++)
-        {
-            cs.add(new Chirp("test" + i + "@example.com", "Random words"));
-            cs.add(new Chirp("test" + i + "@example.com", "I really like &test" + ((i+4)%10) + ", they're a cool person"));
-            cs.add(new Chirp("test" + i + "@example.com", "&test" + ((i+7)%10) + " is an asshole"));
-            cs.add(new Chirp("test" + i + "@example.com", "Someone really boring: &test" + ((i+2)%10)));
-        }
-
-        chirps = cs;
-    }
-
     public static class ChirpViewHolder extends RecyclerView.ViewHolder
     {
         private TextView creatorTextView;
@@ -112,7 +94,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
 
         public void bind(int index)
         {
-            Chirp c = chirps.get(index);
+            Chirp c = Database.getDatabase().getTimeline().get(index);
             creatorTextView.setText("&" + c.getCreator());
             messageTextView.setText(c.getMessage());
             this.index = index;
@@ -134,12 +116,13 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return chirps.size();
+            return Database.getDatabase().getTimeline().size();
         }
     }
 
     private void updateUI()
     {
+        ServerConnector.get().sendTimelineRequest(this);
         if (chirpAdapter == null)
         {
             chirpAdapter = new ChirpAdapter();

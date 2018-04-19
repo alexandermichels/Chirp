@@ -1,62 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
 <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="top|center">
+    android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/addOrRemove"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/editwatchlist_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#AA00EE"
+        android:layout_weight=".9"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Please Enter the User You'd Like to Add"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:layout_weight=".1"
+        style="?android:attr/buttonBarButtonStyle" >
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text=""
-        tools:layout_editor_absoluteX="42dp"
-        tools:layout_editor_absoluteY="48dp" />
+        <Button
+            android:id="@+id/editwatchlist_timeline_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".33"
+            android:text="@string/timeline" />
 
-    <Button
-        android:id="@+id/addUButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add User to Watch List"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="113dp" />
+        <Button
+            android:id="@+id/editwatchlist_create_chirp_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".34"
+            android:text="@string/create_chirp" />
 
+        <Button
+            android:id="@+id/editwatchlist_logout_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight=".33"
+            android:text="@string/logout" />
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="300dp" />
+    </LinearLayout>
 
-
-    <Button
-        android:id="@+id/removeUButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Remove User from Watch List"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="161dp" />
-
-    <Button
-        android:id="@+id/logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logout"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="446dp" />
 </LinearLayout>
-</android.support.constraint.ConstraintLayout>

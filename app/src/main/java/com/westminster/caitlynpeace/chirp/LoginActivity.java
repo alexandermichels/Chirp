@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
     //we want to declare them here so they are fields/instance variables, different scope than a local variable
@@ -76,12 +77,24 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                //try to log in
-                Intent l = new Intent(LoginActivity.this, ViewRecentChirpsActivity.class);
-                l.putExtra(ViewRecentChirpsActivity.LABEL_KEY,"View Recent Chirps");
-                l.putExtra(ViewRecentChirpsActivity.USER_EMAIL, userEmail);
-                l.putExtra(ViewRecentChirpsActivity.USER_PASSWORD, userPassword);
-                startActivity(l);
+                Database db = Database.getDatabase();
+                db.setUsername(userEmail);
+                db.setHash(StringUtil.applySha256(userEmail+userPassword));
+                ServerConnector.get().sendLoginRequest(LoginActivity.this);
+                db = Database.getDatabase();
+                if (db.getU() == null)
+                {
+                    emailEditText.setText("");
+                    passwordEditText.setText("");
+                    userEmail = "";
+                    userPassword = "";
+                    Toast.makeText(LoginActivity.this, "Login attempt failed, please try again", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Intent l = new Intent(LoginActivity.this, ViewRecentChirpsActivity.class);
+                    startActivity(l);
+                }
             }
         });
 

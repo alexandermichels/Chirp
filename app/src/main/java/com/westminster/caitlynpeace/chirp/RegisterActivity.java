@@ -140,9 +140,21 @@ public class RegisterActivity extends AppCompatActivity
             {
                 if (isValidUser())
                 {
-                    Intent r = new Intent(RegisterActivity.this, ViewRecentChirpsActivity.class);
-                    r.putExtra(RegisterActivity.LABEL_KEY, "View Recent Chirps");
-                    startActivity(r);
+                    Database.getDatabase().setUsername(userEmail);
+                    String h = StringUtil.applySha256(userEmail+userPassword);
+                    Database.getDatabase().setHash(h);
+                    Database.getDatabase().setU(new User(userEmail, h, userHandle));
+                    ServerConnector.get().sendRegisterRequest(RegisterActivity.this);
+                    if (Database.getDatabase().getU() == null)
+                    {
+                        Toast.makeText(RegisterActivity.this, "Something went very wrong", Toast.LENGTH_SHORT);
+                    }
+                    else
+                    {
+                        Intent r = new Intent(RegisterActivity.this, ViewRecentChirpsActivity.class);
+                        r.putExtra(RegisterActivity.LABEL_KEY, "View Recent Chirps");
+                        startActivity(r);
+                    }
                 }
             }
         });
