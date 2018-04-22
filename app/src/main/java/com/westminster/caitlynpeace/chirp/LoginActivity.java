@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements UserHandler {
     //we want to declare them here so they are fields/instance variables, different scope than a local variable
     private EditText emailEditText;
     private EditText passwordEditText;
@@ -80,21 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                 Database db = Database.getDatabase();
                 db.setUsername(userEmail);
                 db.setHash(StringUtil.applySha256(userEmail+userPassword));
-                ServerConnector.get().sendLoginRequest(LoginActivity.this);
-                db = Database.getDatabase();
-                if (db.getU() == null)
-                {
-                    emailEditText.setText("");
-                    passwordEditText.setText("");
-                    userEmail = "";
-                    userPassword = "";
-                    Toast.makeText(LoginActivity.this, "Login attempt failed, please try again", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Intent l = new Intent(LoginActivity.this, ViewRecentChirpsActivity.class);
-                    startActivity(l);
-                }
+                ServerConnector.get().sendLoginRequest(LoginActivity.this, LoginActivity.this);
             }
         });
 
@@ -110,5 +96,20 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void handleUserResponse(User u)
+    {
+        Database.getDatabase().logout();
+        Database.getDatabase().setU(u);
+        Intent r = new Intent(LoginActivity.this, ViewRecentChirpsActivity.class);
+        startActivity(r);
+    }
+
+    @Override
+    public void handleUserError()
+    {
+        Toast.makeText(LoginActivity.this, "Something went very wrong", Toast.LENGTH_SHORT).show();
     }
 }

@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import java.io.File;
 
-public class RegisterActivity extends AppCompatActivity
+public class RegisterActivity extends AppCompatActivity implements UserHandler
 {
     public static final String LABEL_KEY = "LABELKEY" ;
     private EditText inputEmail;
@@ -139,17 +139,7 @@ public class RegisterActivity extends AppCompatActivity
                     String h = StringUtil.applySha256(userEmail+userPassword);
                     Database.getDatabase().setHash(h);
                     Database.getDatabase().setU(new User(userEmail, h, userHandle));
-                    ServerConnector.get().sendRegisterRequest(RegisterActivity.this);
-                    if (Database.getDatabase().getU() == null)
-                    {
-                        Toast.makeText(RegisterActivity.this, "Something went very wrong", Toast.LENGTH_SHORT);
-                    }
-                    else
-                    {
-                        Intent r = new Intent(RegisterActivity.this, ViewRecentChirpsActivity.class);
-                        r.putExtra(RegisterActivity.LABEL_KEY, "View Recent Chirps");
-                        startActivity(r);
-                    }
+                    ServerConnector.get().sendRegisterRequest(RegisterActivity.this, RegisterActivity.this);
                 }
             }
         });
@@ -206,5 +196,21 @@ public class RegisterActivity extends AppCompatActivity
         }
 
         return true;
+    }
+
+    @Override
+    public void handleUserResponse(User u)
+    {
+        Database.getDatabase().logout();
+        Database.getDatabase().setU(u);
+        Intent r = new Intent(RegisterActivity.this, ViewRecentChirpsActivity.class);
+        r.putExtra(RegisterActivity.LABEL_KEY, "View Recent Chirps");
+        startActivity(r);
+    }
+
+    @Override
+    public void handleUserError()
+    {
+        Toast.makeText(RegisterActivity.this, "Something went very wrong", Toast.LENGTH_SHORT).show();
     }
 }

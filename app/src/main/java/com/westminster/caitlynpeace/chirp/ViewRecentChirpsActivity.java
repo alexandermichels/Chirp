@@ -12,7 +12,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ViewRecentChirpsActivity extends AppCompatActivity {
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class ViewRecentChirpsActivity extends AppCompatActivity implements TimelineHandler
+{
 
     private RecyclerView timeline;
     private ChirpAdapter chirpAdapter;
@@ -27,7 +32,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewrecentchirps);
 
-        ServerConnector.get().sendTimelineRequest(this);
+        ServerConnector.get().sendTimelineRequest(this, this);
         timeline = findViewById(R.id.timeline_recyclerview);
         timelineManager = new LinearLayoutManager(this);
         timeline.setLayoutManager(timelineManager);
@@ -64,6 +69,33 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    @Override
+    public void handleTimelineResponse(Chirp[] timeline)
+    {
+       for (int i = 0; i < timeline.length; i++)
+       {
+           int newest = i;
+           for (int j = i+1; j < timeline.length; j++)
+           {
+               if (timeline[j].getTime().before(timeline[newest].getTime()))
+               {
+                    newest = j;
+               }
+           }
+           Chirp temp = timeline[newest];
+           timeline[newest] = timeline[i];
+           timeline[i] = temp;
+       }
+
+       Database.getDatabase().setTimeline(new ArrayList<Chirp>(Arrays.asList(timeline)));
+    }
+
+    @Override
+    public void handleTimelineError()
+    {
+        Toast.makeText(ViewRecentChirpsActivity.this, "Something went very wrong", Toast.LENGTH_SHORT);
     }
 
     public static class ChirpViewHolder extends RecyclerView.ViewHolder
@@ -110,7 +142,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity {
 
     private void updateUI()
     {
-        ServerConnector.get().sendTimelineRequest(this);
+        ServerConnector.get().sendTimelineRequest(this, this);
         if (chirpAdapter == null)
         {
             chirpAdapter = new ChirpAdapter();

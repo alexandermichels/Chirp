@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -15,6 +16,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ServerConnector {
@@ -27,10 +29,10 @@ public class ServerConnector {
 
     }
 
-    private static final String BASE_URL = "http://10.43.8.75:5010";
+    private static final String BASE_URL = "http://chirpserver.n8ppampw8d.us-east-2.elasticbeanstalk.com";
     private RequestQueue requestQueue;
 
-    public void sendLoginRequest(Context c) {
+    public void sendLoginRequest(Context c, final UserHandler handler) {
         RequestQueue queue = getRequestQueue(c);
         String url = BASE_URL+"/login";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -41,8 +43,7 @@ public class ServerConnector {
                         Log.d("HTTP Login", "Response is: "+ response);
                         Gson gson = new Gson();
                         User u = gson.fromJson(response, User.class);
-                        UserHandler handler = new UserHandler();
-                        handler.handleResponse(u);
+                        handler.handleUserResponse(u);
                     }
                 },
 
@@ -52,13 +53,13 @@ public class ServerConnector {
                     public void onErrorResponse(VolleyError error)
                     {
 
-                        Log.d("HTTP Login", error.getMessage());
+                        Log.d("HTTP Login", "Something when wrong");
                     }
                 }
         )
         {
             @Override
-            protected Map<String, String> getParams()
+            public Map<String, String> getHeaders() throws AuthFailureError
             {
                 Map<String, String> params = new HashMap<>();
                 Database db = Database.getDatabase();
@@ -79,7 +80,7 @@ public class ServerConnector {
         queue.add(stringRequest);
     }
 
-    public void sendRegisterRequest(Context c) {
+    public void sendRegisterRequest(Context c, final UserHandler handler) {
         RequestQueue queue = getRequestQueue(c);
         String url = BASE_URL+"/register";
         StringRequest stringRequest = new StringRequest(Request.Method.PUT, url,
@@ -90,8 +91,7 @@ public class ServerConnector {
                         Log.d("HTTP Register", "Response is: "+ response);
                         Gson gson = new Gson();
                         User u = gson.fromJson(response, User.class);
-                        UserHandler handler = new UserHandler();
-                        handler.handleResponse(u);
+                        handler.handleUserResponse(u);
                     }
                 },
 
@@ -101,20 +101,19 @@ public class ServerConnector {
                     public void onErrorResponse(VolleyError error)
                     {
                         Database.getDatabase().setU(null);
+                        handler.handleUserError();
                         Log.d("HTTP Register", "That didn't work!");
-                        Log.d("HTTP Register", error.getMessage());
                     }
                 }
         )
         {
             @Override
-            protected Map<String, String> getParams()
+            public Map<String, String> getHeaders() throws AuthFailureError
             {
-                Map<String, String> params = new HashMap<>();
-                Database db = Database.getDatabase();
-                params.put("username", db.getU().getEmail());
-                params.put("handle", db.getU().getHandle());
-                params.put("hash", db.getU().getHash());
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("username", Database.getDatabase().getU().getEmail());
+                params.put("handle", Database.getDatabase().getU().getHandle());
+                params.put("hash", Database.getDatabase().getU().getHash());
                 return params;
             }
         };
@@ -122,7 +121,7 @@ public class ServerConnector {
         queue.add(stringRequest);
     }
 
-    public void sendTimelineRequest(Context c) {
+    public void sendTimelineRequest(Context c, final TimelineHandler handler) {
         RequestQueue queue = getRequestQueue(c);
         String url = BASE_URL+"/";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -133,8 +132,7 @@ public class ServerConnector {
                         Log.d("HTTP Timeline", "Response is: "+ response);
                         Gson gson = new Gson();
                         Chirp[] chirps = gson.fromJson(response, Chirp[].class);
-                        TimelineHandler handler = new TimelineHandler();
-                        handler.handleResponse(chirps);
+                        handler.handleTimelineResponse(chirps);
                     }
                 },
 
@@ -144,13 +142,13 @@ public class ServerConnector {
                     public void onErrorResponse(VolleyError error)
                     {
 
-                        Log.d("HTTP Timeline", error.getMessage());
+                        Log.d("HTTP Timeline", "Something when wrong");
                     }
                 }
         )
         {
             @Override
-            protected Map<String, String> getParams()
+            public Map<String, String> getHeaders() throws AuthFailureError
             {
                 Map<String, String> params = new HashMap<>();
                 Database db = Database.getDatabase();
@@ -171,7 +169,7 @@ public class ServerConnector {
         queue.add(stringRequest);
     }
 
-    public void sendListUsersRequest(Context c) {
+    public void sendListUsersRequest(Context c, final ListUsersHandler handler) {
         RequestQueue queue = getRequestQueue(c);
         String url = BASE_URL+"/users";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -181,15 +179,28 @@ public class ServerConnector {
                         Log.d("HTTP List Users", "Response is: "+ response);
                         Gson gson = new Gson();
                         User[] users = gson.fromJson(response, User[].class);
-                        ListUsersResponseHandler handler = new ListUsersResponseHandler();
                         handler.handleResponse(new ArrayList<User>(Arrays.asList(users)));
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("HTTP List Users",error.getMessage());
+                handler.handleListUsersError();
+                Log.d("HTTP List Users","Something when wrong");
             }
-        });
+        })
+        {
+            Map<String, String> params = new HashMap<>();
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                params.put("username", Database.getDatabase().getU().getEmail());
+                params.put("handle", Database.getDatabase().getU().getHandle());
+                params.put("hash", Database.getDatabase().getU().getHash());
+                return params;
+            }
+        }
+                ;
 
         queue.add(stringRequest);
     }
@@ -199,45 +210,6 @@ public class ServerConnector {
         if (requestQueue == null)
             requestQueue = Volley.newRequestQueue(c);
         return requestQueue;
-    }
-
-    public class ListUsersResponseHandler
-    {
-        public void handleResponse(ArrayList<User> users)
-        {
-            Database.getDatabase().setUsers(users);
-        }
-    }
-
-    public class UserHandler
-    {
-        public void handleResponse(User u)
-        {
-            Database.getDatabase().setU(u);
-        }
-    }
-
-    public class TimelineHandler
-    {
-        public void handleResponse(Chirp [] timeline)
-        {
-            for (int i = 0; i < timeline.length; i++)
-            {
-                int newest = i;
-                for (int j = i+1; j < timeline.length; j++)
-                {
-                    if (timeline[j].getTime().before(timeline[newest].getTime()))
-                    {
-                        newest = j;
-                    }
-                }
-                Chirp temp = timeline[newest];
-                timeline[newest] = timeline[i];
-                timeline[i] = temp;
-            }
-
-            Database.getDatabase().setTimeline(new ArrayList<Chirp>(Arrays.asList(timeline)));
-        }
     }
 
 }

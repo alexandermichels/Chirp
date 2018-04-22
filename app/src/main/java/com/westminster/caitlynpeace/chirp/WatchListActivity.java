@@ -13,8 +13,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 
-public class WatchListActivity extends AppCompatActivity
+
+public class WatchListActivity extends AppCompatActivity implements ListUsersHandler
 {
     private RecyclerView userList;
     private LinearLayoutManager userManager;
@@ -143,5 +145,15 @@ public class WatchListActivity extends AppCompatActivity
         {
             userAdapter.notifyDataSetChanged();
         }
+    }
+
+    public void handleResponse(ArrayList<User> users)
+    {
+        Database.getDatabase().setUsers(users);
+    }
+
+    public void handleListUsersError()
+    {
+        Toast.makeText(WatchListActivity.this, "Something fucked up", Toast.LENGTH_SHORT).show();
     }
 }

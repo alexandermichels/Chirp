@@ -73,6 +73,8 @@ public class Database
         authenticated = false;
     }
 
+    public void login() { authenticated = true; }
+
     public ArrayList<User> getUsers()
     {
 
