@@ -1,7 +1,10 @@
 package com.westminster.caitlynpeace.chirp;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -13,12 +16,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 public class CreateChirpActivity extends AppCompatActivity implements ChirpHandler
 {
+    private int SELECT_IMAGE;
     private EditText chirpMessage;
     private Button addPhotoButton;
     private Button chirpButton;
 
+    private byte [] image;
     private String message;
 
     @Override
@@ -60,7 +68,10 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
             @Override
             public void onClick(View view)
             {
-                //open gallery
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);//
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"),SELECT_IMAGE);
             }
         });
 
@@ -128,6 +139,42 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
 
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SELECT_IMAGE)
+        {
+            if (resultCode == Activity.RESULT_OK)
+            {
+                if (data != null)
+                {
+                    try
+                    {
+                        Bitmap image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        byte[] byteArray = stream.toByteArray();
+                        image.recycle();
+
+                        //downsample image?
+                        this.image = byteArray;
+
+                    }
+                    catch (IOException e)
+                    {
+                        Toast.makeText(CreateChirpActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+            else if (resultCode == Activity.RESULT_CANCELED)
+            {
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

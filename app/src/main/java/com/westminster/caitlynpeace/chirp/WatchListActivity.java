@@ -18,7 +18,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class WatchListActivity extends AppCompatActivity implements ListUsersHandler, ListFollowersHandler
+public class WatchListActivity extends AppCompatActivity implements ListUsersHandler, ListFollowersHandler, UpdateFollowingHandler
 {
     private RecyclerView userList;
     private LinearLayoutManager userManager;
@@ -66,6 +66,18 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
             }
         });
 
+    }
+
+    @Override
+    public void handleUpdateFollowingResponse()
+    {
+        updateUI();
+    }
+
+    @Override
+    public void handleUpdateFollowingError()
+    {
+        Toast.makeText(this, "Fuck you dude", Toast.LENGTH_SHORT).show();
     }
 
     public static class UserViewHolder extends RecyclerView.ViewHolder

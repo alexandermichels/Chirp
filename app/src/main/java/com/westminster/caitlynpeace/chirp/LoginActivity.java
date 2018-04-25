@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements UserHandler {
     @Override
     public void handleUserResponse(User u)
     {
-        Database.getDatabase().logout();
+        Database.getDatabase().login();
         Database.getDatabase().setU(u);
         Intent r = new Intent(LoginActivity.this, ViewRecentChirpsActivity.class);
         startActivity(r);

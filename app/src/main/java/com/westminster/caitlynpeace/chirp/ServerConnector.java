@@ -276,6 +276,74 @@ public class ServerConnector {
         queue.add(stringRequest);
     }
 
+    public void sendFollowRequest(Context c, final String toFollow, final UpdateFollowingHandler handler) {
+        RequestQueue queue = getRequestQueue(c);
+        String url = BASE_URL+"/" + toFollow + "/follow";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("HTTP To Follow", "Response is: "+ response);
+                        Gson gson = new Gson();
+                        handler.handleUpdateFollowingResponse();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                handler.handleUpdateFollowingError();
+                Log.d("HTTP To Follow","Something when wrong");
+            }
+        })
+        {
+            Map<String, String> params = new HashMap<>();
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                params.put("username", Database.getDatabase().getU().getEmail());
+                params.put(":username", toFollow);
+                return params;
+            }
+        }
+                ;
+
+        queue.add(stringRequest);
+    }
+
+    public void sendUnfollowRequest(Context c, final String toUnfollow, final UpdateFollowingHandler handler) {
+        RequestQueue queue = getRequestQueue(c);
+        String url = BASE_URL+"/" + toUnfollow + "/unfollow";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("HTTP To Unfollow", "Response is: "+ response);
+                        Gson gson = new Gson();
+                        handler.handleUpdateFollowingResponse();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                handler.handleUpdateFollowingError();
+                Log.d("HTTP To Unfollow","Something when wrong");
+            }
+        })
+        {
+            Map<String, String> params = new HashMap<>();
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                params.put("username", Database.getDatabase().getU().getEmail());
+                params.put(":username", toUnfollow);
+                return params;
+            }
+        }
+                ;
+
+        queue.add(stringRequest);
+    }
+
     @NonNull
     private RequestQueue getRequestQueue(Context c) {
         if (requestQueue == null)

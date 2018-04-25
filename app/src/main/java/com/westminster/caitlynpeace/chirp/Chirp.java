@@ -7,12 +7,14 @@ public class Chirp
 	private String creatorEmail;
 	private Date time;
 	private String message;
+	private byte [] image;
 	
-	public Chirp(String email, String m)
+	public Chirp(String email, String m, byte [] image)
 	{
 		this.creatorEmail = email;
 		this.time = new Date();
 		this.message = m;
+		this.image = image;
 	}
 	
 	public String getCreator()
@@ -39,4 +41,6 @@ public class Chirp
 	{
 		return (String)(this.getCreator()+this.getTime().getTime());
 	}
+
+	public byte [] getImage() { return image; }
 }

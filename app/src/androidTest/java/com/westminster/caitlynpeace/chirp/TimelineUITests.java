@@ -56,7 +56,7 @@ public class TimelineUITests
     @Test
     public void logoutButtonWorks()
     {
-        onView(ViewMatchers.withId(R.id.timeline_logout)).perform(ViewActions.click());
+        onView(ViewMatchers.withId(R.id.menu_logout_button)).perform(ViewActions.click());
         onView(ViewMatchers.withId(R.id.loginActivity_RegisterButton)).check(matches(isDisplayed()));
     }
 }
