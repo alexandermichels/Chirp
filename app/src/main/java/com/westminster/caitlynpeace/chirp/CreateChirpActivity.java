@@ -110,6 +110,18 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
                 Toast.makeText(CreateChirpActivity.this, "Logged Out!", Toast.LENGTH_LONG).show();
                 return true;
 
+            case R.id.menu_create_chirp_button:
+                return true;
+
+            case R.id.menu_timeline_button:
+                Intent i = new Intent(CreateChirpActivity.this, ViewRecentChirpsActivity.class);
+                startActivity(i);
+                return true;
+
+            case R.id.menu_watching_button:
+                Intent j = new Intent(CreateChirpActivity.this, WatchListActivity.class);
+                startActivity(j);
+                return true;
 
             default:
                 // If we got here, the user's action was not recognized.

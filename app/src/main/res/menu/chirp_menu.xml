@@ -3,7 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_logout_button"
-        android:icon="@android:drawable/ic_menu_close_clear_cancel"
-        android:title="Logout"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/logout"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_create_chirp_button"
+        android:icon="@drawable/ic_create_chirp"
+        android:title="@string/create_chirp"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/menu_timeline_button"
+        android:icon="@drawable/ic_timeline"
+        android:title="@string/timeline"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/menu_watching_button"
+        android:icon="@drawable/ic_watching"
+        android:title="@string/watching"
+        app:showAsAction="ifRoom"/>
 </menu>

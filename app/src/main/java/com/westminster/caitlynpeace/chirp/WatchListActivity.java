@@ -192,6 +192,19 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
                 Toast.makeText(WatchListActivity.this, "Logged Out!", Toast.LENGTH_LONG).show();
                 return true;
 
+            case R.id.menu_create_chirp_button:
+                Intent k = new Intent(WatchListActivity.this, CreateChirpActivity.class);
+                startActivity(k);
+                return true;
+
+            case R.id.menu_timeline_button:
+                Intent i = new Intent(WatchListActivity.this, ViewRecentChirpsActivity.class);
+                startActivity(i);
+                return true;
+
+            case R.id.menu_watching_button:
+                updateUI();
+                return true;
 
             default:
                 // If we got here, the user's action was not recognized.

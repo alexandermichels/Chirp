@@ -161,6 +161,19 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
                 Toast.makeText(ViewRecentChirpsActivity.this, "Logged Out!", Toast.LENGTH_LONG).show();
                 return true;
 
+            case R.id.menu_create_chirp_button:
+                Intent i = new Intent(ViewRecentChirpsActivity.this, CreateChirpActivity.class);
+                startActivity(i);
+                return true;
+
+            case R.id.menu_timeline_button:
+                updateUI();
+                return true;
+
+            case R.id.menu_watching_button:
+                Intent j = new Intent(ViewRecentChirpsActivity.this, WatchListActivity.class);
+                startActivity(j);
+                return true;
 
             default:
                 // If we got here, the user's action was not recognized.
