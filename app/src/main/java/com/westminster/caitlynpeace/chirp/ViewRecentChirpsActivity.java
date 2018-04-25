@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,9 +24,15 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
     private RecyclerView timeline;
     private ChirpAdapter chirpAdapter;
     private LinearLayoutManager timelineManager;
-    private Button logoutButton;
     private Button editWatchingButton;
     private Button createChirpButton;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.chirp_menu, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,17 +45,6 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
         timelineManager = new LinearLayoutManager(this);
         timeline.setLayoutManager(timelineManager);
         updateUI();
-
-        logoutButton = findViewById(R.id.timeline_logout);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Database.getDatabase().logout();
-                Intent l = new Intent(ViewRecentChirpsActivity.this, LoginActivity.class);
-                startActivity(l);
-                Toast.makeText(ViewRecentChirpsActivity.this, "Logged Out!", Toast.LENGTH_LONG).show();
-            }
-        });
 
 
         editWatchingButton = findViewById(R.id.timeline_edit_watch);
@@ -151,6 +148,25 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
         else
         {
             chirpAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_logout_button:
+                Database.getDatabase().logout();
+                Intent l = new Intent(ViewRecentChirpsActivity.this, LoginActivity.class);
+                startActivity(l);
+                Toast.makeText(ViewRecentChirpsActivity.this, "Logged Out!", Toast.LENGTH_LONG).show();
+                return true;
+
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
         }
     }
 }

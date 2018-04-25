@@ -152,7 +152,7 @@ public class ServerConnector {
             {
                 Map<String, String> params = new HashMap<>();
                 Database db = Database.getDatabase();
-                params.put("username", db.getUsername());
+                params.put("username", db.getU().getEmail());
                 params.put("hash", db.getHash());
                 if (db.isAuthenticated())
                 {
@@ -179,7 +179,7 @@ public class ServerConnector {
                         Log.d("HTTP List Users", "Response is: "+ response);
                         Gson gson = new Gson();
                         User[] users = gson.fromJson(response, User[].class);
-                        handler.handleResponse(new ArrayList<User>(Arrays.asList(users)));
+                        handler.handleListUsersResponse(new ArrayList<User>(Arrays.asList(users)));
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -197,6 +197,77 @@ public class ServerConnector {
                 params.put("username", Database.getDatabase().getU().getEmail());
                 params.put("handle", Database.getDatabase().getU().getHandle());
                 params.put("hash", Database.getDatabase().getU().getHash());
+                return params;
+            }
+        }
+                ;
+
+        queue.add(stringRequest);
+    }
+
+    public void sendFollowersRequest(Context c, final ListFollowersHandler handler) {
+        RequestQueue queue = getRequestQueue(c);
+        String url = BASE_URL+"/" + Database.getDatabase().getU().getEmail();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("HTTP Followers", "Response is: "+ response);
+                        Gson gson = new Gson();
+                        String[] users = gson.fromJson(response, String[].class);
+                        handler.handleFollowersResponse(new ArrayList<String>(Arrays.asList(users)));
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                handler.handleFollowersError();
+                Log.d("HTTP Followers","Something when wrong");
+            }
+        })
+        {
+            Map<String, String> params = new HashMap<>();
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                params.put(":username", Database.getDatabase().getU().getEmail());
+                params.put("username", Database.getDatabase().getU().getEmail());
+                params.put("handle", Database.getDatabase().getU().getHandle());
+                params.put("hash", Database.getDatabase().getU().getHash());
+                return params;
+            }
+        }
+                ;
+
+        queue.add(stringRequest);
+    }
+
+    public void sendCreateChirpRequest(Context c, final String message, final ChirpHandler handler) {
+        RequestQueue queue = getRequestQueue(c);
+        String url = BASE_URL+"/createChirp";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("HTTP CreateChirp", "Response is: "+ response);
+                        Gson gson = new Gson();
+                        handler.handleChirpResponse();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                handler.handleChirpError();
+                Log.d("HTTP Create Chirp","Something when wrong");
+            }
+        })
+        {
+            Map<String, String> params = new HashMap<>();
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                params.put("username", Database.getDatabase().getU().getEmail());
+                params.put("message", message);
                 return params;
             }
         }

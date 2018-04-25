@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight=".33"
+                android:layout_weight=".5"
                 android:text="@string/watching" />
 
             <Button
@@ -34,16 +34,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight=".34"
+                android:layout_weight=".5"
                 android:text="@string/create_chirp" />
-
-            <Button
-                android:id="@+id/timeline_logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight=".33"
-                android:text="@string/logout" />
 
     </LinearLayout>
 

@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,20 +18,28 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class WatchListActivity extends AppCompatActivity implements ListUsersHandler
+public class WatchListActivity extends AppCompatActivity implements ListUsersHandler, ListFollowersHandler
 {
     private RecyclerView userList;
     private LinearLayoutManager userManager;
     private UserAdapter userAdapter;
     private Button timelineButton;
     private Button createChirpButton;
-    private Button logoutButton;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.chirp_menu, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watchlist);
+        ServerConnector.get().sendListUsersRequest(this, this);
+        ServerConnector.get().sendFollowersRequest(this,this);
 
         userList = findViewById(R.id.watchlist_recyclerview);
         userManager = new LinearLayoutManager(this);
@@ -53,18 +63,6 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
             {
                 Intent i = new Intent(WatchListActivity.this, CreateChirpActivity.class);
                 startActivity(i);
-            }
-        });
-
-        logoutButton = findViewById(R.id.watchlist_logout_button);
-        logoutButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view)
-            {
-                Database.getDatabase().logout();
-                Intent l = new Intent(WatchListActivity.this, LoginActivity.class);
-                startActivity(l);
-                Toast.makeText(WatchListActivity.this, "Logged Out!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -135,7 +133,8 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
 
     private void updateUI()
     {
-        ServerConnector.get().sendListUsersRequest(this);
+        ServerConnector.get().sendListUsersRequest(this, this);
+        ServerConnector.get().sendFollowersRequest(this, this);
         if (userAdapter == null)
         {
             userAdapter = new UserAdapter();
@@ -147,13 +146,58 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
         }
     }
 
-    public void handleResponse(ArrayList<User> users)
+    @Override
+    public void handleListUsersResponse(ArrayList<User> users)
     {
         Database.getDatabase().setUsers(users);
     }
 
+    @Override
     public void handleListUsersError()
     {
         Toast.makeText(WatchListActivity.this, "Something fucked up", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void handleFollowersResponse(ArrayList<String> users)
+    {
+        for (User u : Database.getDatabase().getUsers())
+        {
+            boolean isFollowing = false;
+            loop: for (String s : users)
+            {
+                if (u.getEmail().equals(s))
+                {
+                    isFollowing = true;
+                    break loop;
+                }
+            }
+            Database.getDatabase().setFollowing(u.getEmail(),isFollowing);
+        }
+    }
+
+    @Override
+    public void handleFollowersError()
+    {
+        Toast.makeText(WatchListActivity.this, "You fucked up", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_logout_button:
+                Database.getDatabase().logout();
+                Intent l = new Intent(WatchListActivity.this, LoginActivity.class);
+                startActivity(l);
+                Toast.makeText(WatchListActivity.this, "Logged Out!", Toast.LENGTH_LONG).show();
+                return true;
+
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

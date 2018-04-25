@@ -15,8 +15,6 @@ public class Database
 {
     private static final String DBFILE = "DATABASE_text_file";
     private boolean authenticated;
-    private String username;
-    private String hash;
     private User u;
 
     ArrayList<User> users;
@@ -96,25 +94,13 @@ public class Database
     public String getUsername()
     {
 
-        return username;
-    }
-
-    public void setUsername(String username)
-    {
-
-        this.username = username;
+        return getU().getEmail();
     }
 
     public String getHash()
     {
 
-        return hash;
-    }
-
-    public void setHash(String hash)
-    {
-
-        this.hash = hash;
+        return getU().getHash();
     }
 
     public User getU()
@@ -140,9 +126,15 @@ public class Database
 
         this.timeline = timeline;
     }
+    
 
     public boolean isFollowing(String username)
     {
         return following.get(username);
+    }
+
+    public void setFollowing(String username, boolean bool)
+    {
+        following.put(username, bool);
     }
 }

@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +20,13 @@ public class LoginActivity extends AppCompatActivity implements UserHandler {
     private Button registerButton;
     private String userEmail;
     private String userPassword;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.chirp_menu, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +86,7 @@ public class LoginActivity extends AppCompatActivity implements UserHandler {
             @Override
             public void onClick(View view)
             {
-                Database db = Database.getDatabase();
-                db.setUsername(userEmail);
-                db.setHash(StringUtil.applySha256(userEmail+userPassword));
+                Database.getDatabase().setU(new User(userEmail, StringUtil.applySha256(userEmail+userPassword), null));
                 ServerConnector.get().sendLoginRequest(LoginActivity.this, LoginActivity.this);
             }
         });
@@ -111,5 +118,24 @@ public class LoginActivity extends AppCompatActivity implements UserHandler {
     public void handleUserError()
     {
         Toast.makeText(LoginActivity.this, "Something went very wrong", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_logout_button:
+                Database.getDatabase().logout();
+                Intent l = new Intent(LoginActivity.this, LoginActivity.class);
+                startActivity(l);
+                Toast.makeText(LoginActivity.this, "Logged Out!", Toast.LENGTH_LONG).show();
+                return true;
+
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

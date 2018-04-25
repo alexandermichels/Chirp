@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +31,13 @@ public class RegisterActivity extends AppCompatActivity implements UserHandler
     private String userHandle;
     private String userPassword;
     private String userConfirmPass;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.chirp_menu, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -135,9 +144,7 @@ public class RegisterActivity extends AppCompatActivity implements UserHandler
             {
                 if (isValidUser())
                 {
-                    Database.getDatabase().setUsername(userEmail);
                     String h = StringUtil.applySha256(userEmail+userPassword);
-                    Database.getDatabase().setHash(h);
                     Database.getDatabase().setU(new User(userEmail, h, userHandle));
                     ServerConnector.get().sendRegisterRequest(RegisterActivity.this, RegisterActivity.this);
                 }
@@ -204,7 +211,6 @@ public class RegisterActivity extends AppCompatActivity implements UserHandler
         Database.getDatabase().logout();
         Database.getDatabase().setU(u);
         Intent r = new Intent(RegisterActivity.this, ViewRecentChirpsActivity.class);
-        r.putExtra(RegisterActivity.LABEL_KEY, "View Recent Chirps");
         startActivity(r);
     }
 
@@ -212,5 +218,24 @@ public class RegisterActivity extends AppCompatActivity implements UserHandler
     public void handleUserError()
     {
         Toast.makeText(RegisterActivity.this, "Something went very wrong", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_logout_button:
+                Database.getDatabase().logout();
+                Intent l = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(l);
+                Toast.makeText(RegisterActivity.this, "Logged Out!", Toast.LENGTH_LONG).show();
+                return true;
+
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }
