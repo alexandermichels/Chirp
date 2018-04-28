@@ -177,4 +177,33 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
             }
         }
     }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        try
+        {
+            Database.getDatabase().save(this);
+        }
+        catch (IOException e)
+        {
+
+        }
+    }
+
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        try
+        {
+            Database.getDatabase().load(this);
+        }
+        catch (Exception e)
+        {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+    }
+
 }

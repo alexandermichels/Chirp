@@ -1,5 +1,7 @@
 package com.westminster.caitlynpeace.chirp;
 
+import android.content.Context;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,22 +36,14 @@ public class Database
 
     private Database()
     {
-        try
-        {
-            load(new File(DBFILE));
-        }
-        catch (Exception e)
-        {
-            authenticated = false;
-        }
         users = new ArrayList<>();
         timeline = new ArrayList<>();
         following = new HashMap<>();
     }
 
-    static void load(File f) throws IOException, ClassNotFoundException
+    static void load(Context c) throws IOException, ClassNotFoundException
     {
-        FileInputStream fileInputStream = new FileInputStream(f);
+        FileInputStream fileInputStream = new FileInputStream(new File(c.getFilesDir(), getDBFile()));
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
         soleInstance = (Database) objectInputStream.readObject();
@@ -59,9 +53,9 @@ public class Database
     }
 
 
-    public void save(File f) throws IOException
+    public void save(Context c) throws IOException
     {
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(f));
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(new File(c.getFilesDir(), getDBFile())));
         objectOutputStream.writeObject(this);
         objectOutputStream.close();
     }
@@ -72,6 +66,11 @@ public class Database
     }
 
     public void login() { authenticated = true; }
+
+    public static String getDBFile()
+    {
+        return DBFILE;
+    }
 
     public ArrayList<User> getUsers()
     {

@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -64,6 +66,34 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
             }
         });
 
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        try
+        {
+            Database.getDatabase().save(this);
+        }
+        catch (IOException e)
+        {
+
+        }
+    }
+
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        try
+        {
+            Database.getDatabase().load(this);
+        }
+        catch (Exception e)
+        {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
     }
 
     @Override

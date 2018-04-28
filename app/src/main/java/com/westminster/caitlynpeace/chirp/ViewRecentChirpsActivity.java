@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +39,15 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewrecentchirps);
+
+        try
+        {
+            Database.load(this);
+        }
+        catch (Exception e)
+        {
+
+        }
 
         ServerConnector.get().sendTimelineRequest(this, this);
         timeline = findViewById(R.id.timeline_recyclerview);
@@ -178,5 +188,34 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
 
         }
     }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        try
+        {
+            Database.getDatabase().save(this);
+        }
+        catch (IOException e)
+        {
+
+        }
+    }
+
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        try
+        {
+            Database.getDatabase().load(this);
+        }
+        catch (Exception e)
+        {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+    }
+
 }
 
