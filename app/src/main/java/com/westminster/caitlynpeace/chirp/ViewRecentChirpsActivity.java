@@ -23,7 +23,6 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
 
     private RecyclerView timeline;
     private ChirpAdapter chirpAdapter;
-    private LinearLayoutManager timelineManager;
     private Button editWatchingButton;
     private Button createChirpButton;
 
@@ -42,8 +41,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
 
         ServerConnector.get().sendTimelineRequest(this, this);
         timeline = findViewById(R.id.timeline_recyclerview);
-        timelineManager = new LinearLayoutManager(this);
-        timeline.setLayoutManager(timelineManager);
+        timeline.setLayoutManager(new LinearLayoutManager(this));
         updateUI();
 
 
@@ -71,7 +69,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
     @Override
     public void handleTimelineResponse(Chirp[] timeline)
     {
-       for (int i = 0; i < timeline.length; i++)
+       for (int i = 0; i < timeline.length-1; i++)
        {
            int newest = i;
            for (int j = i+1; j < timeline.length; j++)
@@ -85,14 +83,13 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
            timeline[newest] = timeline[i];
            timeline[i] = temp;
        }
-
        Database.getDatabase().setTimeline(new ArrayList<Chirp>(Arrays.asList(timeline)));
     }
 
     @Override
     public void handleTimelineError()
     {
-        Toast.makeText(ViewRecentChirpsActivity.this, "Something went very wrong", Toast.LENGTH_SHORT);
+        Toast.makeText(ViewRecentChirpsActivity.this, "Something went very wrong", Toast.LENGTH_SHORT).show();
     }
 
     public static class ChirpViewHolder extends RecyclerView.ViewHolder
@@ -106,15 +103,14 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
             super(inflater.inflate(R.layout.chirp, parent, false));
             creatorTextView = itemView.findViewById(R.id.chirp_creator);
             messageTextView = itemView.findViewById(R.id.chirp_message);
-            //set on click listener later?
         }
 
-        public void bind(int index)
+        public void bind(int i)
         {
-            Chirp c = Database.getDatabase().getTimeline().get(index);
+            Chirp c = Database.getDatabase().getTimeline().get(i);
             creatorTextView.setText("&" + c.getCreator());
             messageTextView.setText(c.getMessage());
-            this.index = index;
+            this.index = i;
         }
     }
 
@@ -133,7 +129,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
 
         @Override
         public int getItemCount() {
-            return Database.getDatabase().getTimeline().size();
+            return Database.getDatabase().getTimelineSize();
         }
     }
 

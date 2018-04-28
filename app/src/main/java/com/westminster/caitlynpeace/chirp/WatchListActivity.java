@@ -21,7 +21,6 @@ import java.util.ArrayList;
 public class WatchListActivity extends AppCompatActivity implements ListUsersHandler, ListFollowersHandler, UpdateFollowingHandler
 {
     private RecyclerView userList;
-    private LinearLayoutManager userManager;
     private UserAdapter userAdapter;
     private Button timelineButton;
     private Button createChirpButton;
@@ -42,8 +41,7 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
         ServerConnector.get().sendFollowersRequest(this,this);
 
         userList = findViewById(R.id.watchlist_recyclerview);
-        userManager = new LinearLayoutManager(this);
-        userList.setLayoutManager(userManager);
+        userList.setLayoutManager(new LinearLayoutManager(this));
         updateUI();
 
         timelineButton = findViewById(R.id.watchlist_timeline_button);
@@ -98,11 +96,11 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
                 {
                     if (Database.getDatabase().isFollowing(u.getEmail()))
                     {
-                        //update to remove from list
+                        //unfollow
                     }
                     else
                     {
-                        //update to add to list
+                        //follow
                     }
                 }
             });
@@ -173,19 +171,7 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
     @Override
     public void handleFollowersResponse(ArrayList<String> users)
     {
-        for (User u : Database.getDatabase().getUsers())
-        {
-            boolean isFollowing = false;
-            loop: for (String s : users)
-            {
-                if (u.getEmail().equals(s))
-                {
-                    isFollowing = true;
-                    break loop;
-                }
-            }
-            Database.getDatabase().setFollowing(u.getEmail(),isFollowing);
-        }
+        Database.getDatabase().reconcileFollowing(users);
     }
 
     @Override

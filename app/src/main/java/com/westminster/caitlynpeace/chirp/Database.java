@@ -126,7 +126,11 @@ public class Database
 
         this.timeline = timeline;
     }
-    
+
+    public int getTimelineSize()
+    {
+        return getTimeline().size();
+    }
 
     public boolean isFollowing(String username)
     {
@@ -136,5 +140,22 @@ public class Database
     public void setFollowing(String username, boolean bool)
     {
         following.put(username, bool);
+    }
+
+    public void reconcileFollowing(ArrayList<String> following)
+    {
+        for (User u : this.getUsers())
+        {
+            boolean isFollowing = false;
+            loop: for (String s : following)
+            {
+                if (u.getEmail().equals(s))
+                {
+                    isFollowing = true;
+                    break loop;
+                }
+            }
+            Database.getDatabase().setFollowing(u.getEmail(),isFollowing);
+        }
     }
 }

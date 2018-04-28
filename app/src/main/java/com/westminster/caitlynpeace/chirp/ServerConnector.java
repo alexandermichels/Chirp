@@ -29,7 +29,7 @@ public class ServerConnector {
 
     }
 
-    private static final String BASE_URL = "http://chirpserver.n8ppampw8d.us-east-2.elasticbeanstalk.com";
+    private static final String BASE_URL = "http://10.0.2.2:5000";
     private RequestQueue requestQueue;
 
     public void sendLoginRequest(Context c, final UserHandler handler) {
@@ -187,27 +187,14 @@ public class ServerConnector {
                 handler.handleListUsersError();
                 Log.d("HTTP List Users","Something when wrong");
             }
-        })
-        {
-            Map<String, String> params = new HashMap<>();
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError
-            {
-                params.put("username", Database.getDatabase().getU().getEmail());
-                params.put("handle", Database.getDatabase().getU().getHandle());
-                params.put("hash", Database.getDatabase().getU().getHash());
-                return params;
-            }
-        }
-                ;
+        });
 
         queue.add(stringRequest);
     }
 
     public void sendFollowersRequest(Context c, final ListFollowersHandler handler) {
         RequestQueue queue = getRequestQueue(c);
-        String url = BASE_URL+"/" + Database.getDatabase().getU().getEmail();
+        String url = BASE_URL+"/users/" + Database.getDatabase().getU().getEmail() + "/following";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -232,8 +219,6 @@ public class ServerConnector {
             {
                 params.put(":username", Database.getDatabase().getU().getEmail());
                 params.put("username", Database.getDatabase().getU().getEmail());
-                params.put("handle", Database.getDatabase().getU().getHandle());
-                params.put("hash", Database.getDatabase().getU().getHash());
                 return params;
             }
         }
@@ -245,7 +230,7 @@ public class ServerConnector {
     public void sendCreateChirpRequest(Context c, final String message, final ChirpHandler handler) {
         RequestQueue queue = getRequestQueue(c);
         String url = BASE_URL+"/createChirp";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.PUT, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -279,7 +264,7 @@ public class ServerConnector {
     public void sendFollowRequest(Context c, final String toFollow, final UpdateFollowingHandler handler) {
         RequestQueue queue = getRequestQueue(c);
         String url = BASE_URL+"/" + toFollow + "/follow";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -312,8 +297,8 @@ public class ServerConnector {
 
     public void sendUnfollowRequest(Context c, final String toUnfollow, final UpdateFollowingHandler handler) {
         RequestQueue queue = getRequestQueue(c);
-        String url = BASE_URL+"/" + toUnfollow + "/unfollow";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        String url = BASE_URL+"/users/" + toUnfollow + "/unfollow";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

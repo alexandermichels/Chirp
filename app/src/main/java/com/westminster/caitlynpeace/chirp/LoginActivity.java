@@ -12,7 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LoginActivity extends AppCompatActivity implements UserHandler {
+import java.util.ArrayList;
+
+public class LoginActivity extends AppCompatActivity implements UserHandler, ListUsersHandler {
     //we want to declare them here so they are fields/instance variables, different scope than a local variable
     private EditText emailEditText;
     private EditText passwordEditText;
@@ -113,4 +115,15 @@ public class LoginActivity extends AppCompatActivity implements UserHandler {
         Toast.makeText(LoginActivity.this, "Something went very wrong", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void handleListUsersResponse(ArrayList<User> users)
+    {
+        Toast.makeText(this, "Response handlers", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void handleListUsersError()
+    {
+        Toast.makeText(this, "Error handlers", Toast.LENGTH_SHORT).show();
+    }
 }
