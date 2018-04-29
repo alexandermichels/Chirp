@@ -91,7 +91,7 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
                 }
                 else
                 {
-                    ServerConnector.get().sendCreateChirpRequest(CreateChirpActivity.this, message, CreateChirpActivity.this);
+                    ServerConnector.get().sendCreateChirpRequest(CreateChirpActivity.this, message, image, CreateChirpActivity.this);
                 }
             }
         });

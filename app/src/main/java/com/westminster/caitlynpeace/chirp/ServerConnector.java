@@ -227,7 +227,7 @@ public class ServerConnector {
         queue.add(stringRequest);
     }
 
-    public void sendCreateChirpRequest(Context c, final String message, final ChirpHandler handler) {
+    public void sendCreateChirpRequest(Context c, final String message, final byte [] image, final ChirpHandler handler) {
         RequestQueue queue = getRequestQueue(c);
         String url = BASE_URL+"/createChirp";
         StringRequest stringRequest = new StringRequest(Request.Method.PUT, url,
@@ -235,7 +235,6 @@ public class ServerConnector {
                     @Override
                     public void onResponse(String response) {
                         Log.d("HTTP CreateChirp", "Response is: "+ response);
-                        Gson gson = new Gson();
                         handler.handleChirpResponse();
                     }
                 }, new Response.ErrorListener() {
@@ -251,8 +250,10 @@ public class ServerConnector {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError
             {
+                Gson gson = new Gson();
                 params.put("username", Database.getDatabase().getU().getEmail());
                 params.put("message", message);
+                params.put("image", gson.toJson(image));
                 return params;
             }
         }

@@ -28,6 +28,20 @@ public class LoginActivity extends AppCompatActivity implements UserHandler, Lis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        try
+        {
+            Database.load(this);
+            if (Database.getDatabase().isAuthenticated())
+            {
+                startActivity(new Intent(this, ViewRecentChirpsActivity.class));
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
+
+
         // Get user's email
         emailEditText = (EditText) findViewById(R.id.loginActivity_UserEmail);
         //we need to use a TextWatcher to grab the string anytime they stop typing
@@ -105,8 +119,7 @@ public class LoginActivity extends AppCompatActivity implements UserHandler, Lis
     {
         Database.getDatabase().login();
         Database.getDatabase().setU(u);
-        Intent r = new Intent(LoginActivity.this, ViewRecentChirpsActivity.class);
-        startActivity(r);
+        startActivity(new Intent(LoginActivity.this, ViewRecentChirpsActivity.class));
     }
 
     @Override

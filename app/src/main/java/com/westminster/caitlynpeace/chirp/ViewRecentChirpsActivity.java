@@ -1,6 +1,8 @@
 package com.westminster.caitlynpeace.chirp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,20 +43,8 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewrecentchirps);
 
-        try
-        {
-            Database.load(this);
-        }
-        catch (Exception e)
-        {
-
-        }
-
-        ServerConnector.get().sendTimelineRequest(this, this);
         timeline = findViewById(R.id.timeline_recyclerview);
         timeline.setLayoutManager(new LinearLayoutManager(this));
-        updateUI();
-
 
         editWatchingButton = findViewById(R.id.timeline_edit_watch);
         editWatchingButton.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +65,8 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
                 startActivity(i);
             }
         });
+
+        updateUI();
     }
 
     @Override
@@ -94,6 +87,11 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
            timeline[i] = temp;
        }
        Database.getDatabase().setTimeline(new ArrayList<Chirp>(Arrays.asList(timeline)));
+
+       if (chirpAdapter != null)
+       {
+           chirpAdapter.notifyDataSetChanged();
+       }
     }
 
     @Override
@@ -106,6 +104,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
     {
         private TextView creatorTextView;
         private TextView messageTextView;
+        private ImageView imageView;
         private int index;
 
         public ChirpViewHolder(LayoutInflater inflater, ViewGroup parent)
@@ -113,6 +112,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
             super(inflater.inflate(R.layout.chirp, parent, false));
             creatorTextView = itemView.findViewById(R.id.chirp_creator);
             messageTextView = itemView.findViewById(R.id.chirp_message);
+            imageView = itemView.findViewById(R.id.chirp_image);
         }
 
         public void bind(int i)
@@ -120,6 +120,10 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
             Chirp c = Database.getDatabase().getTimeline().get(i);
             creatorTextView.setText("&" + c.getCreator());
             messageTextView.setText(c.getMessage());
+            if (c.getImage().length > 0)
+            {
+                imageView.setImageBitmap(BitmapFactory.decodeByteArray(c.getImage(), 0, c.getImage().length));
+            }
             this.index = i;
         }
     }

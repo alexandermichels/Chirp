@@ -39,8 +39,6 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watchlist);
-        ServerConnector.get().sendListUsersRequest(this, this);
-        ServerConnector.get().sendFollowersRequest(this,this);
 
         userList = findViewById(R.id.watchlist_recyclerview);
         userList.setLayoutManager(new LinearLayoutManager(this));
@@ -117,9 +115,9 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
 
         public UserViewHolder(LayoutInflater inflater, ViewGroup parent)
         {
-            super(inflater.inflate(R.layout.chirp, parent, false));
-            handleTextView = itemView.findViewById(R.id.chirp_creator);
-            followButton = itemView.findViewById(R.id.chirp_message);
+            super(inflater.inflate(R.layout.user, parent, false));
+            handleTextView = itemView.findViewById(R.id.user_handle);
+            followButton = itemView.findViewById(R.id.follow_button);
             followButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view)
@@ -190,6 +188,10 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
     public void handleListUsersResponse(ArrayList<User> users)
     {
         Database.getDatabase().setUsers(users);
+        if (userAdapter != null)
+        {
+            userAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -202,6 +204,10 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
     public void handleFollowersResponse(ArrayList<String> users)
     {
         Database.getDatabase().reconcileFollowing(users);
+        if (userAdapter != null)
+        {
+            userAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
