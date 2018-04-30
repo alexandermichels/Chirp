@@ -142,12 +142,12 @@ public class Database
         following.put(username, bool);
     }
 
-    public void reconcileFollowing(ArrayList<String> following)
+    public void reconcileFollowing()
     {
         for (User u : this.getUsers())
         {
             boolean isFollowing = false;
-            loop: for (String s : following)
+            loop: for (String s : getDatabase().getU().getFollowing())
             {
                 if (u.getEmail().equals(s))
                 {

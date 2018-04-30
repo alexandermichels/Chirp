@@ -77,7 +77,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
            int newest = i;
            for (int j = i+1; j < timeline.length; j++)
            {
-               if (timeline[j].getTime().before(timeline[newest].getTime()))
+               if (timeline[j].getTime().after(timeline[newest].getTime()))
                {
                     newest = j;
                }
@@ -120,7 +120,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
             Chirp c = Database.getDatabase().getTimeline().get(i);
             creatorTextView.setText("&" + c.getCreator());
             messageTextView.setText(c.getMessage());
-            if (c.getImage().length > 0)
+            if (c.getImage() != null && c.getImage().length > 0)
             {
                 imageView.setImageBitmap(BitmapFactory.decodeByteArray(c.getImage(), 0, c.getImage().length));
             }
@@ -204,20 +204,6 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
         catch (IOException e)
         {
 
-        }
-    }
-
-    @Override
-    public void onRestart()
-    {
-        super.onRestart();
-        try
-        {
-            Database.getDatabase().load(this);
-        }
-        catch (Exception e)
-        {
-            startActivity(new Intent(this, LoginActivity.class));
         }
     }
 

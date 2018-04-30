@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class WatchListActivity extends AppCompatActivity implements ListUsersHandler, ListFollowersHandler, UpdateFollowingHandler
+public class WatchListActivity extends AppCompatActivity implements ListUsersHandler, UpdateFollowingHandler
 {
     private RecyclerView userList;
     private UserAdapter userAdapter;
@@ -81,20 +81,6 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
     }
 
     @Override
-    public void onRestart()
-    {
-        super.onRestart();
-        try
-        {
-            Database.getDatabase().load(this);
-        }
-        catch (Exception e)
-        {
-            startActivity(new Intent(this, LoginActivity.class));
-        }
-    }
-
-    @Override
     public void handleUpdateFollowingResponse()
     {
         updateUI();
@@ -106,7 +92,7 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
         Toast.makeText(this, "Fuck you dude", Toast.LENGTH_SHORT).show();
     }
 
-    public static class UserViewHolder extends RecyclerView.ViewHolder
+    public class UserViewHolder extends RecyclerView.ViewHolder
     {
         private TextView handleTextView;
         private Button followButton;
@@ -124,11 +110,11 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
                 {
                     if (Database.getDatabase().isFollowing(u.getEmail()))
                     {
-                        //unfollow
+                        ServerConnector.get().sendUnfollowRequest(WatchListActivity.this, u.getEmail(), WatchListActivity.this);
                     }
                     else
                     {
-                        //follow
+                        ServerConnector.get().sendFollowRequest(WatchListActivity.this, u.getEmail(), WatchListActivity.this);
                     }
                 }
             });
@@ -172,7 +158,6 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
     private void updateUI()
     {
         ServerConnector.get().sendListUsersRequest(this, this);
-        ServerConnector.get().sendFollowersRequest(this, this);
         if (userAdapter == null)
         {
             userAdapter = new UserAdapter();
@@ -188,6 +173,7 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
     public void handleListUsersResponse(ArrayList<User> users)
     {
         Database.getDatabase().setUsers(users);
+        Database.getDatabase().reconcileFollowing();
         if (userAdapter != null)
         {
             userAdapter.notifyDataSetChanged();
@@ -200,21 +186,6 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
         Toast.makeText(WatchListActivity.this, "Something fucked up", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void handleFollowersResponse(ArrayList<String> users)
-    {
-        Database.getDatabase().reconcileFollowing(users);
-        if (userAdapter != null)
-        {
-            userAdapter.notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public void handleFollowersError()
-    {
-        Toast.makeText(WatchListActivity.this, "You fucked up", Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

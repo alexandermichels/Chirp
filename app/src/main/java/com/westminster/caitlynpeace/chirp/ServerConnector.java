@@ -192,45 +192,10 @@ public class ServerConnector {
         queue.add(stringRequest);
     }
 
-    public void sendFollowersRequest(Context c, final ListFollowersHandler handler) {
-        RequestQueue queue = getRequestQueue(c);
-        String url = BASE_URL+"/users/" + Database.getDatabase().getU().getEmail() + "/following";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("HTTP Followers", "Response is: "+ response);
-                        Gson gson = new Gson();
-                        String[] users = gson.fromJson(response, String[].class);
-                        handler.handleFollowersResponse(new ArrayList<String>(Arrays.asList(users)));
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                handler.handleFollowersError();
-                Log.d("HTTP Followers","Something when wrong");
-            }
-        })
-        {
-            Map<String, String> params = new HashMap<>();
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError
-            {
-                params.put(":username", Database.getDatabase().getU().getEmail());
-                params.put("username", Database.getDatabase().getU().getEmail());
-                return params;
-            }
-        }
-                ;
-
-        queue.add(stringRequest);
-    }
-
-    public void sendCreateChirpRequest(Context c, final String message, final byte [] image, final ChirpHandler handler) {
+    public void sendCreateChirpRequest(Context c, final Chirp chirp, final ChirpHandler handler) {
         RequestQueue queue = getRequestQueue(c);
         String url = BASE_URL+"/createChirp";
-        StringRequest stringRequest = new StringRequest(Request.Method.PUT, url,
+        CreateChirpRequest stringRequest = new CreateChirpRequest(Request.Method.PUT, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -243,21 +208,7 @@ public class ServerConnector {
                 handler.handleChirpError();
                 Log.d("HTTP Create Chirp","Something when wrong");
             }
-        })
-        {
-            Map<String, String> params = new HashMap<>();
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError
-            {
-                Gson gson = new Gson();
-                params.put("username", Database.getDatabase().getU().getEmail());
-                params.put("message", message);
-                params.put("image", gson.toJson(image));
-                return params;
-            }
-        }
-                ;
+        }, chirp);
 
         queue.add(stringRequest);
     }
@@ -270,7 +221,6 @@ public class ServerConnector {
                     @Override
                     public void onResponse(String response) {
                         Log.d("HTTP To Follow", "Response is: "+ response);
-                        Gson gson = new Gson();
                         handler.handleUpdateFollowingResponse();
                     }
                 }, new Response.ErrorListener() {
@@ -324,10 +274,29 @@ public class ServerConnector {
                 params.put(":username", toUnfollow);
                 return params;
             }
-        }
-                ;
+        };
 
         queue.add(stringRequest);
+    }
+
+    public class CreateChirpRequest extends StringRequest
+    {
+        Map<String, String> params;
+
+        @Override
+        public Map<String, String> getParams() throws AuthFailureError
+        {
+            return params;
+        }
+
+        public CreateChirpRequest(int method, String url, Response.Listener<String> listener, Response.ErrorListener errorListener, Chirp c)
+        {
+            super(method, url, listener, errorListener);
+            params = new HashMap<>();
+            params.put("creator", c.getCreator());
+            params.put("message", c.getMessage());
+            params.put("image", c.getImage().toString());
+        }
     }
 
     @NonNull

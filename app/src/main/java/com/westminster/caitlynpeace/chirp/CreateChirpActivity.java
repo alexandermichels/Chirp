@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -23,6 +24,7 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
 {
     private int SELECT_IMAGE;
     private EditText chirpMessage;
+    ImageView chirpImage;
     private Button addPhotoButton;
     private Button chirpButton;
 
@@ -63,6 +65,8 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
             }
         });
 
+        chirpImage = findViewById(R.id.createChirp_chirpImage);
+
         addPhotoButton = findViewById(R.id.createChirp_chirp_photo);
         addPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +95,8 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
                 }
                 else
                 {
-                    ServerConnector.get().sendCreateChirpRequest(CreateChirpActivity.this, message, image, CreateChirpActivity.this);
+                    Chirp c = new Chirp(Database.getDatabase().getU().getEmail(), message, image);
+                    ServerConnector.get().sendCreateChirpRequest(CreateChirpActivity.this, c, CreateChirpActivity.this);
                 }
             }
         });
@@ -156,13 +161,21 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
                     {
                         Bitmap image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        int downsampleRatio = Math.min(image.getHeight(), image.getWidth());
+                        if (downsampleRatio > 256)
+                        {
+                            downsampleRatio = 100 * 256/downsampleRatio;
+                        }
+                        else
+                        {
+                            downsampleRatio = 100;
+                        }
+                        image.compress(Bitmap.CompressFormat.JPEG, downsampleRatio, stream);
                         byte[] byteArray = stream.toByteArray();
-                        image.recycle();
+                        chirpImage.setImageBitmap(image);
 
                         //downsample image?
                         this.image = byteArray;
-
                     }
                     catch (IOException e)
                     {
@@ -191,19 +204,4 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
 
         }
     }
-
-    @Override
-    public void onRestart()
-    {
-        super.onRestart();
-        try
-        {
-            Database.getDatabase().load(this);
-        }
-        catch (Exception e)
-        {
-            startActivity(new Intent(this, LoginActivity.class));
-        }
-    }
-
 }
