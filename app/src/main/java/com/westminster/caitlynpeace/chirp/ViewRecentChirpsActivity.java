@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -166,14 +167,20 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
         switch (item.getItemId()) {
             case R.id.menu_logout_button:
                 Database.getDatabase().logout();
-                Intent l = new Intent(ViewRecentChirpsActivity.this, LoginActivity.class);
-                startActivity(l);
+                try
+                {
+                    Database.getDatabase().save(this);
+                }
+                catch (Exception e)
+                {
+
+                }
+                startActivity(new Intent(ViewRecentChirpsActivity.this, LoginActivity.class));
                 Toast.makeText(ViewRecentChirpsActivity.this, "Logged Out!", Toast.LENGTH_LONG).show();
                 return true;
 
             case R.id.menu_create_chirp_button:
-                Intent i = new Intent(ViewRecentChirpsActivity.this, CreateChirpActivity.class);
-                startActivity(i);
+                startActivity(new Intent(ViewRecentChirpsActivity.this, CreateChirpActivity.class));
                 return true;
 
             case R.id.menu_timeline_button:
@@ -181,8 +188,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
                 return true;
 
             case R.id.menu_watching_button:
-                Intent j = new Intent(ViewRecentChirpsActivity.this, WatchListActivity.class);
-                startActivity(j);
+                startActivity(new Intent(ViewRecentChirpsActivity.this, WatchListActivity.class));
                 return true;
 
             default:
@@ -203,7 +209,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
         }
         catch (IOException e)
         {
-
+            Log.d("On stop", "Database did not save");
         }
     }
 

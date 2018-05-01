@@ -237,11 +237,9 @@ public class ServerConnector {
             public Map<String, String> getHeaders() throws AuthFailureError
             {
                 params.put("username", Database.getDatabase().getU().getEmail());
-                params.put(":username", toFollow);
                 return params;
             }
-        }
-                ;
+        };
 
         queue.add(stringRequest);
     }
@@ -271,7 +269,6 @@ public class ServerConnector {
             public Map<String, String> getHeaders() throws AuthFailureError
             {
                 params.put("username", Database.getDatabase().getU().getEmail());
-                params.put(":username", toUnfollow);
                 return params;
             }
         };
@@ -281,21 +278,20 @@ public class ServerConnector {
 
     public class CreateChirpRequest extends StringRequest
     {
-        Map<String, String> params;
+        byte[] body;
 
         @Override
-        public Map<String, String> getParams() throws AuthFailureError
+        public byte[] getBody() throws AuthFailureError
         {
-            return params;
+            return body;
         }
 
         public CreateChirpRequest(int method, String url, Response.Listener<String> listener, Response.ErrorListener errorListener, Chirp c)
         {
             super(method, url, listener, errorListener);
-            params = new HashMap<>();
-            params.put("creator", c.getCreator());
-            params.put("message", c.getMessage());
-            params.put("image", c.getImage().toString());
+            Gson g = new Gson();
+            String s = g.toJson(c);
+            body = s.getBytes();
         }
     }
 

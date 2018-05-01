@@ -1,8 +1,9 @@
 package com.westminster.caitlynpeace.chirp;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Chirp 
+public class Chirp implements Serializable
 {
 	private String creatorEmail;
 	private Date time;

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +39,8 @@ public class LoginActivity extends AppCompatActivity implements UserHandler, Lis
         }
         catch (Exception e)
         {
-
+            Log.d("Login Activity", "Database won't load");
+            Log.d("Login", e.getMessage());
         }
 
 

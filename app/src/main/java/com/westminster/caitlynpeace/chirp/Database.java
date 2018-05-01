@@ -10,11 +10,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Database
+public class Database implements Serializable
 {
     private static final String DBFILE = "DATABASE_text_file";
     private boolean authenticated;

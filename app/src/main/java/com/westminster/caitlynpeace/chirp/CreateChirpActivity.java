@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -121,8 +122,15 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
         switch (item.getItemId()) {
             case R.id.menu_logout_button:
                 Database.getDatabase().logout();
-                Intent l = new Intent(CreateChirpActivity.this, LoginActivity.class);
-                startActivity(l);
+                try
+                {
+                    Database.getDatabase().save(this);
+                }
+                catch (Exception e)
+                {
+
+                }
+                startActivity(new Intent(CreateChirpActivity.this, LoginActivity.class));
                 Toast.makeText(CreateChirpActivity.this, "Logged Out!", Toast.LENGTH_LONG).show();
                 return true;
 
@@ -130,13 +138,11 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
                 return true;
 
             case R.id.menu_timeline_button:
-                Intent i = new Intent(CreateChirpActivity.this, ViewRecentChirpsActivity.class);
-                startActivity(i);
+                startActivity(new Intent(CreateChirpActivity.this, ViewRecentChirpsActivity.class));
                 return true;
 
             case R.id.menu_watching_button:
-                Intent j = new Intent(CreateChirpActivity.this, WatchListActivity.class);
-                startActivity(j);
+                startActivity(new Intent(CreateChirpActivity.this, WatchListActivity.class));
                 return true;
 
             default:
@@ -201,7 +207,7 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
         }
         catch (IOException e)
         {
-
+            Log.d("On stop", "Database did not save");
         }
     }
 }

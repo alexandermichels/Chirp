@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -76,7 +77,7 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
         }
         catch (IOException e)
         {
-
+            Log.d("On stop", "Database did not save");
         }
     }
 
@@ -110,10 +111,16 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
                 {
                     if (Database.getDatabase().isFollowing(u.getEmail()))
                     {
+                        Database.getDatabase().getU().getFollowing().remove(u.getEmail());
+                        Database.getDatabase().setFollowing(u.getEmail(), false);
+                        followButton.setText("Follow");
                         ServerConnector.get().sendUnfollowRequest(WatchListActivity.this, u.getEmail(), WatchListActivity.this);
                     }
                     else
                     {
+                        Database.getDatabase().getU().getFollowing().add(u.getEmail());
+                        Database.getDatabase().setFollowing(u.getEmail(), true);
+                        followButton.setText("Unfollow");
                         ServerConnector.get().sendFollowRequest(WatchListActivity.this, u.getEmail(), WatchListActivity.this);
                     }
                 }
@@ -192,19 +199,24 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
         switch (item.getItemId()) {
             case R.id.menu_logout_button:
                 Database.getDatabase().logout();
-                Intent l = new Intent(WatchListActivity.this, LoginActivity.class);
-                startActivity(l);
+                try
+                {
+                    Database.getDatabase().save(this);
+                }
+                catch (Exception e)
+                {
+
+                }
+                startActivity(new Intent(WatchListActivity.this, LoginActivity.class));
                 Toast.makeText(WatchListActivity.this, "Logged Out!", Toast.LENGTH_LONG).show();
                 return true;
 
             case R.id.menu_create_chirp_button:
-                Intent k = new Intent(WatchListActivity.this, CreateChirpActivity.class);
-                startActivity(k);
+                startActivity(new Intent(WatchListActivity.this, CreateChirpActivity.class));
                 return true;
 
             case R.id.menu_timeline_button:
-                Intent i = new Intent(WatchListActivity.this, ViewRecentChirpsActivity.class);
-                startActivity(i);
+                startActivity(new Intent(WatchListActivity.this, ViewRecentChirpsActivity.class));
                 return true;
 
             case R.id.menu_watching_button:
