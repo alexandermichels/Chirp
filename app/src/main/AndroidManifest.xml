@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.westminster.caitlynpeace.chirp">
+    package="com.development.michels.alexander">
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -10,17 +10,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity android:name="com.development.michels.alexander.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="RegisterActivity"></activity>
-        <activity android:name=".ViewRecentChirpsActivity"></activity>
-        <activity android:name=".CreateChirpActivity"></activity>
-        <activity android:name=".WatchListActivity"></activity>
+        <activity android:name="com.development.michels.alexander.RegisterActivity"></activity>
+        <activity android:name="com.development.michels.alexander.ViewRecentChirpsActivity"></activity>
+        <activity android:name="com.development.michels.alexander.CreateChirpActivity"></activity>
+        <activity android:name="com.development.michels.alexander.WatchListActivity"></activity>
     </application>
 
 </manifest>
