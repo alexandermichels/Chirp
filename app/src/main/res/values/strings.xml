@@ -5,4 +5,6 @@
     <string name="create_chirp">Chirp!</string>
     <string name="timeline">View Chirps</string>
     <string name="logout">Logout</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
 </resources>

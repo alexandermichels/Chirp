@@ -20,7 +20,11 @@ import java.io.File;
 
 public class RegisterActivity extends AppCompatActivity implements UserHandler
 {
-    public static final String LABEL_KEY = "LABELKEY" ;
+    private final String USER_EMAIL = "USER_EMAIL";
+    private final String USER_HANDLE = "USER_HANDLE";
+    private final String USER_PASSWORD = "USER_PASSWORD";
+    private final String CONFIRM_PASSWORD = "CONFIRM_PASSWORD";
+
     private EditText inputEmail;
     private EditText inputHandle;
     private EditText inputPass;
@@ -40,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity implements UserHandler
         setContentView(R.layout.activity_register);
 
         // Get newly registered user's email
-        inputEmail = (EditText) findViewById(R.id.registerActivity_userEmail);
+        inputEmail = findViewById(R.id.registerActivity_userEmail);
         inputEmail.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -63,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity implements UserHandler
         });
 
         //Get newly registered user's handle
-        inputHandle = (EditText) findViewById(R.id.registerActivity_userHandle);
+        inputHandle = findViewById(R.id.registerActivity_userHandle);
         inputHandle.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -86,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity implements UserHandler
         });
 
         // Get newly registered users' password
-        inputPass = (EditText) findViewById(R.id.registerActivity_userPassword);
+        inputPass = findViewById(R.id.registerActivity_userPassword);
         inputPass.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -109,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity implements UserHandler
         });
 
         //Get confirmed password & check if it is identical
-        confirmPass = (EditText) findViewById(R.id.registerActivity_confirmUserPassword);
+        confirmPass = findViewById(R.id.registerActivity_confirmUserPassword);
         confirmPass.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -138,12 +142,19 @@ public class RegisterActivity extends AppCompatActivity implements UserHandler
             {
                 if (isValidUser())
                 {
-                    String h = StringUtil.applySha256(userEmail+userPassword);
-                    Database.getDatabase().setU(new User(userEmail, h, userHandle));
+                    Database.getDatabase().setU(new User(userEmail, StringUtil.applySha256(userEmail+userPassword), userHandle));
                     ServerConnector.get().sendRegisterRequest(RegisterActivity.this, RegisterActivity.this);
                 }
             }
         });
+
+        if (savedInstanceState != null)
+        {
+            userEmail = savedInstanceState.getString(USER_EMAIL);
+            userHandle = savedInstanceState.getString(USER_HANDLE);
+            userPassword = savedInstanceState.getString(USER_PASSWORD);
+            userConfirmPass = savedInstanceState.getString(CONFIRM_PASSWORD);
+        }
 
     }
 
@@ -211,7 +222,18 @@ public class RegisterActivity extends AppCompatActivity implements UserHandler
     @Override
     public void handleUserError()
     {
-        Toast.makeText(RegisterActivity.this, "Something went very wrong", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "There was an error in registration", Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle)
+    {
+        super.onSaveInstanceState(bundle);
+        bundle.putString(USER_EMAIL, userEmail);
+        bundle.putString(USER_HANDLE, userHandle);
+        bundle.putString(USER_PASSWORD, userPassword);
+        bundle.putString(CONFIRM_PASSWORD, userConfirmPass);
     }
 
 }

@@ -87,7 +87,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
            timeline[newest] = timeline[i];
            timeline[i] = temp;
        }
-       Database.getDatabase().setTimeline(new ArrayList<Chirp>(Arrays.asList(timeline)));
+       Database.getDatabase().setTimeline(new ArrayList<>(Arrays.asList(timeline)));
 
        if (chirpAdapter != null)
        {
@@ -98,7 +98,7 @@ public class ViewRecentChirpsActivity extends AppCompatActivity implements Timel
     @Override
     public void handleTimelineError()
     {
-        Toast.makeText(ViewRecentChirpsActivity.this, "Something went very wrong", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ViewRecentChirpsActivity.this, "The server isn't working, try again later", Toast.LENGTH_SHORT).show();
     }
 
     public static class ChirpViewHolder extends RecyclerView.ViewHolder

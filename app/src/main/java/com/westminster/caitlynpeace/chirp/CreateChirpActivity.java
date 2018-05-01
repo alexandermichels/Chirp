@@ -3,6 +3,7 @@ package com.westminster.caitlynpeace.chirp;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -23,12 +24,15 @@ import java.io.IOException;
 
 public class CreateChirpActivity extends AppCompatActivity implements ChirpHandler
 {
-    private int SELECT_IMAGE;
+    private final String IMAGE_BYTE_ARRAY = "IMAGE_BYTE_ARRAY";
+    private final String MESSAGE_STRING = "MESSAGE_STRING";
+
     private EditText chirpMessage;
     ImageView chirpImage;
     private Button addPhotoButton;
     private Button chirpButton;
 
+    private int SELECT_IMAGE;
     private byte [] image;
     private String message;
 
@@ -37,6 +41,14 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.chirp_menu, menu);
         return true;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle)
+    {
+        super.onSaveInstanceState(bundle);
+        bundle.putByteArray(IMAGE_BYTE_ARRAY, image);
+        bundle.putString(MESSAGE_STRING, message);
     }
 
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -101,20 +113,41 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
                 }
             }
         });
+
+        if (savedInstanceState != null)
+        {
+            try
+            {
+                message = savedInstanceState.getString(MESSAGE_STRING);
+                chirpMessage.setText(message);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            try
+            {
+                image = savedInstanceState.getByteArray(IMAGE_BYTE_ARRAY);
+                chirpImage.setImageBitmap(BitmapFactory.decodeByteArray(image, 0, image.length));
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
     }
 
     @Override
     public void handleChirpResponse()
     {
-        //call the getChirps from Server
-        Intent i = new Intent(CreateChirpActivity.this, ViewRecentChirpsActivity.class);
-        startActivity(i);
+        startActivity(new Intent(CreateChirpActivity.this, ViewRecentChirpsActivity.class));
     }
 
     @Override
     public void handleChirpError()
     {
-        Toast.makeText(CreateChirpActivity.this, "You fucked something up", Toast.LENGTH_SHORT).show();
+        Toast.makeText(CreateChirpActivity.this, "The server isn't working, try again later", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -179,13 +212,11 @@ public class CreateChirpActivity extends AppCompatActivity implements ChirpHandl
                         image.compress(Bitmap.CompressFormat.JPEG, downsampleRatio, stream);
                         byte[] byteArray = stream.toByteArray();
                         chirpImage.setImageBitmap(image);
-
-                        //downsample image?
                         this.image = byteArray;
                     }
                     catch (IOException e)
                     {
-                        Toast.makeText(CreateChirpActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreateChirpActivity.this, "There was an error grabbing your photo...", Toast.LENGTH_SHORT).show();
                     }
 
                 }

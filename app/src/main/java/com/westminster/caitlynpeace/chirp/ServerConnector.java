@@ -22,6 +22,7 @@ import java.util.Map;
 public class ServerConnector {
 
     private static ServerConnector soleInstance;
+    private static RequestQueue requestQueue;
 
     public static ServerConnector get() {
         if (soleInstance == null) soleInstance = new ServerConnector();
@@ -29,8 +30,7 @@ public class ServerConnector {
 
     }
 
-    private static final String BASE_URL = "http://10.0.2.2:5000";
-    private RequestQueue requestQueue;
+    private static final String BASE_URL = "http://chirpserver.n8ppampw8d.us-east-2.elasticbeanstalk.com/";
 
     public void sendLoginRequest(Context c, final UserHandler handler) {
         RequestQueue queue = getRequestQueue(c);

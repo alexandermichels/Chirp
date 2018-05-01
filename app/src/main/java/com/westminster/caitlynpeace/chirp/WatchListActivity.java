@@ -90,7 +90,7 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
     @Override
     public void handleUpdateFollowingError()
     {
-        Toast.makeText(this, "Fuck you dude", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "The server isn't working, try again later", Toast.LENGTH_SHORT).show();
     }
 
     public class UserViewHolder extends RecyclerView.ViewHolder
@@ -113,14 +113,14 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
                     {
                         Database.getDatabase().getU().getFollowing().remove(u.getEmail());
                         Database.getDatabase().setFollowing(u.getEmail(), false);
-                        followButton.setText("Follow");
+                        followButton.setText(R.string.follow);
                         ServerConnector.get().sendUnfollowRequest(WatchListActivity.this, u.getEmail(), WatchListActivity.this);
                     }
                     else
                     {
                         Database.getDatabase().getU().getFollowing().add(u.getEmail());
                         Database.getDatabase().setFollowing(u.getEmail(), true);
-                        followButton.setText("Unfollow");
+                        followButton.setText(R.string.unfollow);
                         ServerConnector.get().sendFollowRequest(WatchListActivity.this, u.getEmail(), WatchListActivity.this);
                     }
                 }
@@ -133,11 +133,11 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
             handleTextView.setText("&" + u.getHandle());
             if (Database.getDatabase().isFollowing(u.getEmail()))
             {
-                followButton.setText("Unfollow");
+                followButton.setText(R.string.unfollow);
             }
             else
             {
-                followButton.setText("Follow");
+                followButton.setText(R.string.follow);
             }
             this.index = index;
         }
@@ -190,7 +190,7 @@ public class WatchListActivity extends AppCompatActivity implements ListUsersHan
     @Override
     public void handleListUsersError()
     {
-        Toast.makeText(WatchListActivity.this, "Something fucked up", Toast.LENGTH_SHORT).show();
+        Toast.makeText(WatchListActivity.this, "The server isn't working, try again later", Toast.LENGTH_SHORT).show();
     }
 
 
