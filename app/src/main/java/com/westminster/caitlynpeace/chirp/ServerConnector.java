@@ -215,7 +215,7 @@ public class ServerConnector {
 
     public void sendFollowRequest(Context c, final String toFollow, final UpdateFollowingHandler handler) {
         RequestQueue queue = getRequestQueue(c);
-        String url = BASE_URL+"/" + toFollow + "/follow";
+        String url = BASE_URL+"/users/" + toFollow + "/follow";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
